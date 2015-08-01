@@ -1,0 +1,7 @@
+Andor 2 is the successor to Andor which began to suffer memory issues through several
+flaws in its design. This is why a lot of the engine will now be rewritten in order to
+correct these issues and create a platform in which to try out better things. This
+move will likely see several major changes, as the new version will be written with
+performance in mind unlike Andor which was written mainly for ease of use. One such
+major change is the removal of Android support this is for the foreseable future,
+however it may be added again once the engine is fully functional.
