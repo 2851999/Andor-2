@@ -1,0 +1,144 @@
+-------------------------------------------------------------
+Release 0 | Beta 0 | Development 0 | Experimental 1
+
+This is the first commit after starting a partial rewrite of
+Andor. At this time, it has less features than Andor, but
+some tests show that this new version almost doubles
+the performance. There may be a while between commits as I
+will be trying to get this new version to the same level as
+Andor reached, but I intend to add some major new features
+that will take some time to implement such as adding collada
+support with skeletal animations which I have never even
+attempted to do before. Therefore it will be a while before
+there will be any major release of Andor 2 but by this time,
+the feature set should exceed that of the original.
+
+Now for the full list of things added
+
+* Added Andor
+* Added Settings
+* Added BaseEngine
+* Added BaseGame
+* Added BaseObject
+* Added BitmapText
+* Added Camera
+* Added Camera2D
+* Added Camera3D
+* Added Colour
+* Added Font
+* Added GameLoopInterface
+* Added Matrix4f
+* Added Object2D
+* Added Object2DBuilder
+* Added Object3D
+* Added Object3DBuilder
+* Added Rectangle
+* Added RenderableObject2D
+* Added RenderableObject3D
+* Added ScreenResolution
+* Added SkyBox
+* Added Vector2f
+* Added Vector3f
+* Added Vector4f
+* Added Vertex
+* Added Vertex2D
+* Added Vertex3D
+* Added Window
+* Added Controller
+* Added ControllerAxis
+* Added ControllerButton
+* Added InputListener
+* Added InputListenerInterface
+* Added InputManager
+* Added Keyboard
+* Added KeyboardShortcut
+* Added KeyboardShortcutListener
+* Added KeyboardShortcuts
+* Added Mouse
+* Added ControlBinding
+* Added ControlBindings
+* Added ControlListener
+* Added ControlListenerInterface
+* Added FBO
+* Added ForwardRenderer
+* Added Material
+* Added RenderData
+* Added RenderTexture
+* Added ResourceManager
+* Added AudioData
+* Added AudioListener
+* Added AudioLoader
+* Added AudioManager
+* Added AudioObject
+* Added AudioSource
+* Added Shader
+* Added ShaderManager
+* Added Texture
+* Added TextureLoader
+* Added TextureManager
+* Added TextureParameters
+* Added TextureSet
+* Added BaseThread
+* Added PhysicsThread
+* Added GUIBorder
+* Added GUIButton
+* Added GUICheckBox
+* Added GUIComponent
+* Added GUIComponentListener
+* Added GUIComponentRenderer
+* Added GUIDropDownList
+* Added GUIDropDownMenu
+* Added GUIFill
+* Added GUIGroup
+* Added GUILabel
+* Added GUILoadingBar
+* Added GUIPanel
+* Added GUIPosition
+* Added GUIRadioCheckBox
+* Added GUISlider
+* Added GUITextBox
+* Added GUITextBoxCursor
+* Added GUITextBoxSelection
+* Added GUITextDisplayArea
+* Added GUITexture
+* Added GUIToolTip
+* Added GUIWindow
+* Added CubeTest
+* Added EngineTest
+* Added GUITest
+* Added ArrayUtils
+* Added BitmapFontUtils
+* Added BufferUtils
+* Added ClipboardUtils
+* Added ConsoleUtils
+* Added ControllerUtils
+* Added FileUtils
+* Added FontUtils
+* Added FPSCalculator
+* Added FPSLimiter
+* Added Log
+* Added Logger
+* Added MaskUtils
+* Added MathUtils
+* Added MessageBox
+* Added OpenGLUtils
+* Added ParserUtils
+* Added ScreenUtils
+* Added ShaderUtils
+* Added SystemInformation
+* Added Time
+* Added Timer
+
+* Created the package org.andor
+* Created the package org.andor.core
+* Created the package org.andor.core.input
+* Created the package org.andor.core.input.bindings
+* Created the package org.andor.core.render
+* Created the package org.andor.core.resource
+* Created the package org.andor.core.resource.audio
+* Created the package org.andor.core.resource.shader
+* Created the package org.andor.core.resource.texture
+* Created the package org.andor.core.thread
+* Created the package org.andor.gui
+* Created the package org.andor.tests
+* Created the package org.andor.utils

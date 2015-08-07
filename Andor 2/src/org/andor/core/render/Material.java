@@ -1,0 +1,42 @@
+/*****************************************************************************
+ *
+ *   Copyright 2015 Joel Davies
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *
+ *****************************************************************************/
+
+package org.andor.core.render;
+
+import org.andor.core.resource.texture.Texture;
+
+public class Material {
+	
+	/* The name of this material */
+	private String name;
+	
+	/* The material properties */
+	private Texture diffuseTexture;
+	
+	/* The constructor */
+	public Material(String name) {
+		this.name = name;
+	}
+	
+	/* The setters and getters */
+	public void setDiffuseTexture(Texture diffuseTexture) { this.diffuseTexture = diffuseTexture; }
+	public String getName() { return this.name; }
+	public Texture getDiffuseTexture() { return this.diffuseTexture; }
+	public boolean hasDiffuseTexture() { return this.diffuseTexture != null; }
+	
+}
