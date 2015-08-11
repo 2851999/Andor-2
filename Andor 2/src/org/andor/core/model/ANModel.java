@@ -16,22 +16,31 @@
  *
  *****************************************************************************/
 
-package org.andor.core.thread;
+package org.andor.core.model;
 
-import org.andor.Settings;
-import org.andor.physics.PhysicsEngine;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PhysicsThread extends EngineThread {
+public class ANModel {
+	
+	/* The geometry */
+	public List<ANGeometry> geometry;
 	
 	/* The constructor */
-	public PhysicsThread() {
-		super("Physics", Settings.Physics.MaxFPS);
+	public ANModel() {
+		this.geometry = new ArrayList<ANGeometry>();
 	}
 	
-	/* The method called every time this thread is executed */
-	public void update() {
-		//Update the physics engine
-		PhysicsEngine.update((int) this.getDelta());
+	/* The method used to get a model */
+	public Model createModel() {
+		//Create the model
+		Model model = new Model();
+		//Go through the geometry
+		for (int a = 0; a < geometry.size(); a++)
+			//Add the current geometry data
+			model.data.add(geometry.get(a).createRenderData());
+		//Return the model
+		return model;
 	}
 	
 }

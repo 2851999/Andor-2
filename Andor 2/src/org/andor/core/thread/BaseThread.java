@@ -18,6 +18,9 @@
 
 package org.andor.core.thread;
 
+import org.andor.utils.Log;
+import org.andor.utils.Logger;
+
 public abstract class BaseThread implements Runnable {
 	
 	/* The name of this thread */
@@ -26,28 +29,27 @@ public abstract class BaseThread implements Runnable {
 	/* The thread */
 	private Thread thread;
 	
-	/* The boolean that states whether this thread is active */
-	private boolean active;
+	/* The boolean that controls whether this thread is running */
+	private boolean alive;
 	
 	/* The constructor */
 	public BaseThread(String name) {
 		this.name = name;
 		//Create the thread
 		this.thread = new Thread(this);
-		this.active = false;
 	}
 	
 	/* The method used to start this thread */
 	public void start() {
 		this.starting();
-		this.active = true;
+		alive = true;
 		this.thread.start();
 	}
 	
 	/* The method inherited from Runnable */
 	public void run() {
 		//Keep going while this thread is active
-		while (this.active) {
+		while (alive) {
 			//Execute the thread
 			this.tick();
 		}
@@ -57,7 +59,13 @@ public abstract class BaseThread implements Runnable {
 	
 	/* The method used to stop this thread */
 	public void stop() {
-		this.active = false;
+		alive = false;
+		try {
+			this.thread.join();
+		} catch (InterruptedException e) {
+			Logger.log("Andor - BaseThread stop()", "Error joining thread " + this.name, Log.ERROR);
+			e.printStackTrace();
+		}
 	}
 	
 	/* The method called when this thread starts */
@@ -72,6 +80,5 @@ public abstract class BaseThread implements Runnable {
 	/* The setters and getters */
 	public String getName() { return this.name; }
 	public Thread getThread() { return this.thread; }
-	public boolean isActive() { return this.active; }
 	
 }

@@ -31,12 +31,22 @@ public class Object2D extends BaseObject {
 	/* The size of this object */
 	public Vector2f size;
 	
+	/* The physics data */
+	public Vector2f velocity;
+	public Vector2f acceleration;
+	public float angularVelocity;
+	public float angularAcceleration;
+	
 	/* The default constructor */
 	public Object2D() {
 		this.position = new Vector2f();
 		this.rotation = 0;
 		this.scale = new Vector2f(1, 1);
 		this.size = new Vector2f();
+		this.velocity = new Vector2f();
+		this.acceleration = new Vector2f();
+		this.angularVelocity = 0;
+		this.angularAcceleration = 0;
 	}
 	
 	/* The other constructors */
@@ -45,6 +55,10 @@ public class Object2D extends BaseObject {
 		this.rotation = 0;
 		this.scale = new Vector2f(1, 1);
 		this.size = new Vector2f();
+		this.velocity = new Vector2f();
+		this.acceleration = new Vector2f();
+		this.angularVelocity = 0;
+		this.angularAcceleration = 0;
 	}
 	
 	public Object2D(Vector2f position, float rotation) {
@@ -52,6 +66,10 @@ public class Object2D extends BaseObject {
 		this.rotation = rotation;
 		this.scale = new Vector2f(1, 1);
 		this.size = new Vector2f();
+		this.velocity = new Vector2f();
+		this.acceleration = new Vector2f();
+		this.angularVelocity = 0;
+		this.angularAcceleration = 0;
 	}
 	
 	public Object2D(Vector2f position, float rotation, Vector2f scale) {
@@ -59,6 +77,20 @@ public class Object2D extends BaseObject {
 		this.rotation = rotation;
 		this.scale = scale;
 		this.size = new Vector2f();
+		this.velocity = new Vector2f();
+		this.acceleration = new Vector2f();
+		this.angularVelocity = 0;
+		this.angularAcceleration = 0;
+	}
+	
+	/* The method used to update the physics of this object */
+	public void update(float deltaSeconds) {
+		//Update the position
+		this.position.add(this.velocity.clone().multiply(deltaSeconds));
+		this.velocity.add(this.acceleration.clone().multiply(deltaSeconds));
+		//Update the rotation
+		this.rotation += this.angularVelocity * deltaSeconds;
+		this.angularVelocity += this.angularAcceleration * deltaSeconds;
 	}
 	
 	/* The method used to attach a child object to this */
@@ -78,6 +110,16 @@ public class Object2D extends BaseObject {
 	public void setSize(float width, float height) { this.size.x = width; this.size.y = height; }
 	public void setWidth(float width) { this.size.x = width; }
 	public void setHeight(float height) { this.size.y = height; }
+	public void setVelocity(Vector2f velocity) { this.velocity = velocity; }
+	public void setVelocity(float x, float y) { this.velocity.x = x; this.velocity.y = y; }
+	public void setVelocityX(float x) { this.velocity.x = x; }
+	public void setVelocityY(float y) { this.velocity.y = y; }
+	public void setAcceleration(Vector2f velocity) { this.velocity = velocity; }
+	public void setAcceleration(float x, float y) { this.velocity.x = x; this.velocity.y = y; }
+	public void setAccelerationX(float x) { this.velocity.x = x; }
+	public void setAccelerationY(float y) { this.velocity.y = y; }
+	public void setAngularVelocity(float angularVelocity) { this.angularVelocity = angularVelocity; }
+	public void setAngularAccceleration(float angularAcceleration) { this.angularAcceleration = angularAcceleration; }
 	
 	public Vector2f getPosition() {
 		if (parent == null)

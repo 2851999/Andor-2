@@ -111,6 +111,31 @@ public class RenderData {
 	}
 	
 	/* The method used to setup this render data (note: indices can be null) */
+	public void setup(int dimensions, float[] vertices, float[] colours, float[] normals, float[] textureCoordinates, short[] indices) {
+		//Assign some of the data
+		this.numberOfVertices = vertices.length / dimensions;
+		this.vertexValuesCount = dimensions;
+		//Assign the booleans
+		this.hasVertices = vertices != null;
+		this.hasColours = colours != null;
+		this.hasTextureCoordinates = textureCoordinates != null;
+		this.hasNormals = normals != null;
+		this.hasIndices = false;
+		//Create the buffers
+		if (this.hasVertices)
+			this.vertices = BufferUtils.createFlippedBuffer(vertices);
+		if (this.hasColours)
+			this.colours = BufferUtils.createFlippedBuffer(colours);
+		if (this.hasTextureCoordinates)
+			this.textureCoordinates = BufferUtils.createFlippedBuffer(textureCoordinates);
+		if (this.hasNormals)
+			this.normals = BufferUtils.createFlippedBuffer(normals);
+		if (this.hasIndices)
+			this.indices = BufferUtils.createFlippedBuffer(indices);
+		this.setup(false);
+	}
+	
+	/* The method used to setup this render data (note: indices can be null) */
 	public void setup(Vertex[] vertices, short[] indices) {
 		//Get the first vertex
 		Vertex first = vertices[0];
@@ -198,11 +223,11 @@ public class RenderData {
 		}
 		
 		//Setup the rest of the data
-		this.setup();
+		this.setup(true);
 	}
 	
 	/* The method used to setup the data given the indices */
-	private void setup() {
+	private void setup(boolean flip) {
 		//Setup the vao
 		if (vao == -1)
 			this.vao = GL30.glGenVertexArrays();
@@ -212,53 +237,58 @@ public class RenderData {
 		//Check to see whether each buffer has been set, then set them up
 		if (this.vertices != null) {
 			//Give the data to OpenGL after setting up the VBO
-			this.vertices.flip();
+			if (flip)
+				this.vertices.flip();
 			if (this.verticesVBO == -1)
 				this.verticesVBO = GL15.glGenBuffers();
 			
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.verticesVBO);
 			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, this.vertices, this.verticesUsage);
 			
-			GL20.glVertexAttribPointer(ForwardRenderer.shader.getAttributeLocation("Vertex"), this.vertexValuesCount, GL11.GL_FLOAT, false, 0, 0);
+			GL20.glVertexAttribPointer(0, this.vertexValuesCount, GL11.GL_FLOAT, false, 0, 0);
 		} else if (this.hasVertices)
 			currentStride += this.vertexValuesCount * Float.BYTES;
 		if (this.colours != null) {
-			this.colours.flip();
+			if (flip)
+				this.colours.flip();
 			if (this.coloursVBO == -1)
 				this.coloursVBO = GL15.glGenBuffers();
 			
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.coloursVBO);
 			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, this.colours, this.coloursUsage);
 			
-			GL20.glVertexAttribPointer(ForwardRenderer.shader.getAttributeLocation("Colour"), COLOUR_VALUES, GL11.GL_FLOAT, false, 0, 0);
+			GL20.glVertexAttribPointer(1, COLOUR_VALUES, GL11.GL_FLOAT, false, 0, 0);
 		} else if (this.hasColours)
 			currentStride += COLOUR_VALUES * Float.BYTES;
 		if (this.textureCoordinates != null) {
-			this.textureCoordinates.flip();
+			if (flip)
+				this.textureCoordinates.flip();
 			if (this.textureCoordinatesVBO == -1)
 				this.textureCoordinatesVBO = GL15.glGenBuffers();
 			
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.textureCoordinatesVBO);
 			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, this.textureCoordinates, this.textureCoordinatesUsage);
 			
-			GL20.glVertexAttribPointer(ForwardRenderer.shader.getAttributeLocation("TextureCoordinate"), TEXTURE_COORDINATE_VALUES, GL11.GL_FLOAT, false, 0, 0);
+			GL20.glVertexAttribPointer(2, TEXTURE_COORDINATE_VALUES, GL11.GL_FLOAT, false, 0, 0);
 		} else if (this.hasTextureCoordinates)
 			currentStride += TEXTURE_COORDINATE_VALUES * Float.BYTES;
 		if (this.normals != null) {
-			this.normals.flip();
+			if (flip)
+				this.normals.flip();
 			if (this.normalsVBO == -1)
 				this.normalsVBO = GL15.glGenBuffers();
 			
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.normalsVBO);
 			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, this.normals, this.normalUsage);
 			
-			GL20.glVertexAttribPointer(ForwardRenderer.shader.getAttributeLocation("Normal"), NORMAL_VALUES, GL11.GL_FLOAT, false, 0, 0);
+			GL20.glVertexAttribPointer(3, NORMAL_VALUES, GL11.GL_FLOAT, false, 0, 0);
 		} else if (this.hasNormals)
 			currentStride += NORMAL_VALUES * Float.BYTES;
 		if (this.other != null) {
 			//Figure out what data is within the other buffer
 			int currentOffset = 0;
-			other.flip();
+			if (flip)
+				other.flip();
 			if (this.otherVBO == -1)
 				this.otherVBO = GL15.glGenBuffers();
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.otherVBO);
@@ -269,28 +299,28 @@ public class RenderData {
 				this.verticesStride = currentStride;
 				currentOffset += this.vertexValuesCount * Float.BYTES;
 				
-				GL20.glVertexAttribPointer(ForwardRenderer.shader.getAttributeLocation("Vertex"), this.vertexValuesCount, GL11.GL_FLOAT, false, this.verticesStride, this.verticesOffset);
+				GL20.glVertexAttribPointer(0, this.vertexValuesCount, GL11.GL_FLOAT, false, this.verticesStride, this.verticesOffset);
 			}
 			if (this.hasColours && this.colours == null) {
 				this.coloursOffset = currentOffset;
 				this.coloursStride = currentStride;
 				currentOffset += COLOUR_VALUES * Float.BYTES;
 				
-				GL20.glVertexAttribPointer(ForwardRenderer.shader.getAttributeLocation("Colour"), COLOUR_VALUES, GL11.GL_FLOAT, false, this.coloursStride, this.coloursOffset);
+				GL20.glVertexAttribPointer(1, COLOUR_VALUES, GL11.GL_FLOAT, false, this.coloursStride, this.coloursOffset);
 			}
 			if (this.hasTextureCoordinates && this.textureCoordinates == null) {
 				this.textureCoordinatesOffset = currentOffset;
 				this.textureCoordinatesStride = currentStride;
 				currentOffset += TEXTURE_COORDINATE_VALUES * Float.BYTES;
 				
-				GL20.glVertexAttribPointer(ForwardRenderer.shader.getAttributeLocation("TextureCoordinate"), TEXTURE_COORDINATE_VALUES, GL11.GL_FLOAT, false, this.textureCoordinatesStride, this.textureCoordinatesOffset);
+				GL20.glVertexAttribPointer(2, TEXTURE_COORDINATE_VALUES, GL11.GL_FLOAT, false, this.textureCoordinatesStride, this.textureCoordinatesOffset);
 			}
 			if (this.hasNormals && this.normals == null) {
 				this.normalsOffset = currentOffset;
 				this.normalsStride = currentStride;
 				currentOffset += NORMAL_VALUES * Float.BYTES;
 				
-				GL20.glVertexAttribPointer(ForwardRenderer.shader.getAttributeLocation("Normal"), NORMAL_VALUES, GL11.GL_FLOAT, false, this.normalsStride, this.normalsOffset);
+				GL20.glVertexAttribPointer(3, NORMAL_VALUES, GL11.GL_FLOAT, false, this.normalsStride, this.normalsOffset);
 			}
 		}
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
@@ -333,14 +363,16 @@ public class RenderData {
 		this.vertices = BufferUtils.createFloatBuffer(this.numberOfVertices * this.vertexValuesCount);
 		for (int a = 0; a < this.numberOfVertices; a++)
 			this.vertices.put(vertices[a].getPositionValues());
-		this.setup();
+		this.hasVertices = true;
+		this.setup(true);
 	}
 	
 	public void updateColour(Colour colour) {
 		this.colours = BufferUtils.createFloatBuffer(this.numberOfVertices * COLOUR_VALUES);
 		for (int a = 0; a < this.numberOfVertices; a++)
 			this.colours.put(colour.getValues());
-		this.setup();
+		this.hasColours = true;
+		this.setup(true);
 	}
 	
 	public void updateColour(Colour[] colours) {
@@ -352,55 +384,64 @@ public class RenderData {
 			if (currentColour >= colours.length)
 				currentColour = 0;
 		}
-		this.setup();
+		this.hasColours = true;
+		this.setup(true);
 	}
 	
 	public void updateColour(Vertex[] vertices) {
 		this.colours = BufferUtils.createFloatBuffer(this.numberOfVertices * COLOUR_VALUES);
 		for (int a = 0; a < this.numberOfVertices; a++)
 			this.colours.put(vertices[a].getColourValues());
-		this.setup();
+		this.hasColours = true;
+		this.setup(true);
 	}
 	
 	public void updateTextureCoordinates(Vertex[] vertices) {
 		this.textureCoordinates = BufferUtils.createFloatBuffer(this.numberOfVertices * TEXTURE_COORDINATE_VALUES);
 		for (int a = 0; a < this.numberOfVertices; a++)
 			this.textureCoordinates.put(vertices[a].getTextureCoordinateValues());
-		this.setup();
+		this.hasTextureCoordinates = true;
+		this.setup(true);
 	}
 	
 	public void updateNormals(Vertex[] vertices) {
 		this.normals = BufferUtils.createFloatBuffer(this.numberOfVertices * NORMAL_VALUES);
 		for (int a = 0; a < this.numberOfVertices; a++)
 			this.normals.put(vertices[a].getNormalValues());
-		this.setup();
+		this.hasNormals = true;
+		this.setup(true);
 	}
 	
 	public void updateIndices(short[] indices) {
 		this.indicesCount = indices.length;
 		this.indices = BufferUtils.createBuffer(indices);
-		this.setup();
+		this.hasIndices = true;
+		this.setup(true);
 	}
 	
 	public void updateVertices(float[] vertices) {
 		this.numberOfVertices = vertices.length / this.vertexValuesCount;
 		this.vertices = BufferUtils.createBuffer(vertices);
-		this.setup();
+		this.hasVertices = true;
+		this.setup(true);
 	}
 	
 	public void updateColour(float[] colours) {
 		this.colours = BufferUtils.createBuffer(colours);
-		this.setup();
+		this.hasColours = true;
+		this.setup(true);
 	}
 	
 	public void updateTextureCoordinates(float[] textureCoordinates) {
 		this.textureCoordinates = BufferUtils.createBuffer(textureCoordinates);
-		this.setup();
+		this.hasTextureCoordinates = true;
+		this.setup(true);
 	}
 	
 	public void updateNormals(float[] normals) {
 		this.normals = BufferUtils.createBuffer(normals);
-		this.setup();
+		this.hasNormals = true;
+		this.setup(true);
 	}
 	
 	/* The setters and getters */

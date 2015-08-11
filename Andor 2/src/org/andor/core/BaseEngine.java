@@ -25,8 +25,10 @@ import org.andor.Andor;
 import org.andor.Settings;
 import org.andor.core.input.InputManager;
 import org.andor.core.render.ForwardRenderer;
+import org.andor.core.render.Renderer;
 import org.andor.core.resource.ResourceManager;
 import org.andor.core.resource.audio.AudioManager;
+import org.andor.core.thread.PhysicsThread;
 import org.andor.utils.FPSCalculator;
 import org.andor.utils.FPSLimiter;
 import org.andor.utils.FontUtils;
@@ -50,6 +52,9 @@ public abstract class BaseEngine {
 	/* The game loop interfaces */
 	public static List<GameLoopInterface> interfaces = new ArrayList<GameLoopInterface>();
 	
+	/* The physics thread */
+	private PhysicsThread physicsThread;
+	
 	/* The default constructor */
 	public BaseEngine() {
 		//Start the engine
@@ -68,8 +73,7 @@ public abstract class BaseEngine {
 		this.fpsLimiter = new FPSLimiter(Settings.Video.MaxFPS);
 		//Create the window
 		Window.create();
-		this.camera = new Camera2D(new Matrix4f().initOrtho(0, Settings.Window.Width, Settings.Window.Height, 0, -1, 1));
-		this.camera.update();
+		this.camera = Camera2D.createOrtho(-1, 1);
 		//Setup the resource manager
 		Settings.Resource.Manager = new ResourceManager(Settings.Resource.Path, Settings.Resource.External);
 		Settings.Resource.Manager.setShadersPath(Settings.Resource.ShadersPath);
@@ -81,12 +85,15 @@ public abstract class BaseEngine {
 		//Load the resources
 		Andor.Resources.Textures.Blank = Settings.Resource.Manager.loadTexture("blank.png");
 		Andor.Resources.Fonts.Default = FontUtils.createBitmapFont("Segoe UI", 16);
+		//Setup the physics thread
+		this.physicsThread = new PhysicsThread();
 	}
 	
 	/* The method called to start the game engine */
 	private void startEngine() {
 		//Notify the game
 		started();
+		this.physicsThread.start();
 		//The main logic loop
 		while (! Window.shouldClose() && ! this.stopRequested) {
 			//Update the FPS calculator
@@ -117,6 +124,8 @@ public abstract class BaseEngine {
 	private void stopEngine() {
 		//Notify the game
 		stopping();
+		//Stop the physics thread
+		this.physicsThread.stop();
 		//Delete all of the resources
 		ResourceManager.deleteAll();
 		//Destroy the audio system
@@ -128,7 +137,7 @@ public abstract class BaseEngine {
 	/* The method used to render some information */
 	public void renderInformation() {
 		//Setup
-		ForwardRenderer.add(camera);
+		Renderer.addCamera(camera);
 		OpenGLUtils.setupRemoveAlpha();
 		OpenGLUtils.enableTexture2D();
 		//Render the FPS
@@ -140,8 +149,10 @@ public abstract class BaseEngine {
 		Andor.Resources.Fonts.Default.render("Memory Usage: " + (((SystemInformation.getTotalMemory() - SystemInformation.getFreeMemory()) / 1024) / 1024) + "/" + ((SystemInformation.getMaxMemory() / 1024) / 1024), 0, 80);
 		Andor.Resources.Fonts.Default.render("Window Size: " + Settings.Window.Width + "x" + Settings.Window.Height, 0, 94);
 		Andor.Resources.Fonts.Default.render("VSync: " + Settings.Video.VSync, 0, 108);
+		Andor.Resources.Fonts.Default.render("Current Physics FPS: " + this.physicsThread.getFPS(), 0, 122);
+		Andor.Resources.Fonts.Default.render("Current Physics Delta: " + this.physicsThread.getDelta(), 0, 136);
 		OpenGLUtils.disableTexture2D();
-		ForwardRenderer.removeCamera();
+		Renderer.removeCamera();
 	}
 	
 	/* The method used to request the engine to stop */

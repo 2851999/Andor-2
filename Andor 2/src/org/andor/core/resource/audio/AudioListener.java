@@ -30,12 +30,12 @@ public class AudioListener extends AudioObject {
 		Vector3f listenerPosition = this.getPosition();
 		Vector3f listenerRotation = this.getRotation();
 		Vector3f listenerVelocity = this.getVelocity();
-        float xDirection = -1f * (float) Math.sin(Math.toRadians(listenerRotation.y));
+        float xDirection = 1f * (float) Math.sin(Math.toRadians(listenerRotation.y));
         float zDirection = -1f * (float) Math.cos(Math.toRadians(listenerRotation.y));
 		//Setup OpenAL
-		AL10.alListener3f(AL10.AL_POSITION, listenerPosition.x, listenerPosition.y, -listenerPosition.z);
+		AL10.alListener3f(AL10.AL_POSITION, -listenerPosition.x, -listenerPosition.y, -listenerPosition.z);
 		AL10.alListener3f(AL10.AL_VELOCITY, listenerVelocity.x, listenerVelocity.y, listenerVelocity.z);
-		AL10.alListenerfv(AL10.AL_ORIENTATION, BufferUtils.createFlippedBuffer(new float[] { xDirection, 0, zDirection, 0, -1f, 0 }));
+		AL10.alListenerfv(AL10.AL_ORIENTATION, BufferUtils.createFlippedBuffer(new float[] { xDirection, 0, zDirection, 0, 1f, 0 }));
 	}
 	
 }

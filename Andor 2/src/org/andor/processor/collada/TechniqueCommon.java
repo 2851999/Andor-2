@@ -16,22 +16,35 @@
  *
  *****************************************************************************/
 
-package org.andor.core.thread;
+package org.andor.processor.collada;
 
-import org.andor.Settings;
-import org.andor.physics.PhysicsEngine;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-public class PhysicsThread extends EngineThread {
+public class TechniqueCommon {
+	
+	/* The accessor */
+	public Accessor accessor;
 	
 	/* The constructor */
-	public PhysicsThread() {
-		super("Physics", Settings.Physics.MaxFPS);
+	public TechniqueCommon() {
+		
 	}
 	
-	/* The method called every time this thread is executed */
-	public void update() {
-		//Update the physics engine
-		PhysicsEngine.update((int) this.getDelta());
+	/* The method used for parsing */
+	public void parse(Node parent) {
+		//Get the nodes
+		NodeList nodes = parent.getChildNodes();
+		//Go through the nodes
+		for (int a = 0; a < nodes.getLength(); a++) {
+			//Get the current node
+			Node node = nodes.item(a);
+			//Check the name of the current node
+			if (node.getNodeName().equals("accessor")) {
+				this.accessor = new Accessor();
+				this.accessor.parse(node);
+			}
+		}
 	}
 	
 }

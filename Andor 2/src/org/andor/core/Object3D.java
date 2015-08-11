@@ -31,12 +31,22 @@ public class Object3D extends BaseObject {
 	/* The size of this object */
 	public Vector3f size;
 	
+	/* The physics data */
+	public Vector3f velocity;
+	public Vector3f acceleration;
+	public Vector3f angularVelocity;
+	public Vector3f angularAcceleration;
+	
 	/* The default constructor */
 	public Object3D() {
 		this.position = new Vector3f();
 		this.rotation = new Vector3f();
 		this.scale = new Vector3f(1, 1, 1);
 		this.size = new Vector3f();
+		this.velocity = new Vector3f();
+		this.acceleration = new Vector3f();
+		this.angularVelocity = new Vector3f();
+		this.angularAcceleration = new Vector3f();
 	}
 	
 	/* The other constructors */
@@ -45,6 +55,10 @@ public class Object3D extends BaseObject {
 		this.rotation = new Vector3f();
 		this.scale = new Vector3f(1, 1, 1);
 		this.size = new Vector3f();
+		this.velocity = new Vector3f();
+		this.acceleration = new Vector3f();
+		this.angularVelocity = new Vector3f();
+		this.angularAcceleration = new Vector3f();
 	}
 	
 	public Object3D(Vector3f position, Vector3f rotation) {
@@ -52,6 +66,10 @@ public class Object3D extends BaseObject {
 		this.rotation = rotation;
 		this.scale = new Vector3f(1, 1, 1);
 		this.size = new Vector3f();
+		this.velocity = new Vector3f();
+		this.acceleration = new Vector3f();
+		this.angularVelocity = new Vector3f();
+		this.angularAcceleration = new Vector3f();
 	}
 	
 	public Object3D(Vector3f position, Vector3f rotation, Vector3f scale) {
@@ -59,6 +77,10 @@ public class Object3D extends BaseObject {
 		this.rotation = rotation;
 		this.scale = scale;
 		this.size = new Vector3f();
+		this.velocity = new Vector3f();
+		this.acceleration = new Vector3f();
+		this.angularVelocity = new Vector3f();
+		this.angularAcceleration = new Vector3f();
 	}
 	
 	/* The method used to attach a child object to this */
@@ -85,6 +107,26 @@ public class Object3D extends BaseObject {
 	public void setWidth(float width) { this.size.x = width; }
 	public void setHeight(float height) { this.size.y = height; }
 	public void setDepth(float depth) { this.size.z = depth; }
+	public void setVelocity(Vector3f velocity) { this.velocity = velocity; }
+	public void setVelocity(float x, float y, float z) { this.velocity.x = x; this.velocity.y = y; this.velocity.z = z; }
+	public void setVelocityX(float x) { this.velocity.x = x; }
+	public void setVelocityY(float y) { this.velocity.y = y; }
+	public void setVelocity(float z) { this.velocity.z = z; }
+	public void setAcceleration(Vector3f velocity) { this.velocity = velocity; }
+	public void setAcceleration(float x, float y, float z) { this.velocity.x = x; this.velocity.y = y; this.velocity.z = z; }
+	public void setAccelerationX(float x) { this.velocity.x = x; }
+	public void setAccelerationY(float y) { this.velocity.y = y; }
+	public void setAcceleration(float z) { this.velocity.z = z; }
+	public void setAngularVelocity(Vector3f angularVelocity) { this.angularVelocity = angularVelocity; }
+	public void setAngularVelocity(float x, float y, float z) { this.angularVelocity.x = x; this.angularVelocity.y = y; this.angularVelocity.z = z; }
+	public void setAngularVelocityX(float x) { this.angularVelocity.x = x; }
+	public void setAngularVelocityY(float y) { this.angularVelocity.y = y; }
+	public void setAngularVelocityZ(float z) { this.angularVelocity.z = z; }
+	public void setAngularAccceleration(Vector3f angularAcceleration) { this.angularAcceleration = angularAcceleration; }
+	public void setAngularAccceleration(float x, float y, float z) { this.angularAcceleration.x = x; this.angularAcceleration.y = y; this.angularAcceleration.z = z; }
+	public void setAngularAcccelerationX(float x) { this.angularAcceleration.x = x; }
+	public void setAngularAcccelerationY(float y) { this.angularAcceleration.y = y; }
+	public void setAngularAcccelerationZ(float z) { this.angularAcceleration.z = z; }
 	
 	public Vector3f getPosition() {
 		if (parent == null)

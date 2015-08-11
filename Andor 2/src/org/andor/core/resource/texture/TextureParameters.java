@@ -22,6 +22,7 @@ import org.andor.Settings;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 
 public class TextureParameters {
@@ -30,7 +31,7 @@ public class TextureParameters {
 	public static int DEFAULT_TARGET = GL11.GL_TEXTURE_2D;
 	public static int DEFAULT_FILTER = GL11.GL_NEAREST;
 	public static int DEFAULT_CLAMP  = GL12.GL_CLAMP_TO_EDGE;
-	public static boolean DEFAULT_SHOULD_CLAMP = false;
+	public static boolean DEFAULT_SHOULD_CLAMP = true;
 	
 	/* The various pre-made texture parameters */
 	public static TextureParameters DEFAULT = new TextureParameters();
@@ -51,6 +52,20 @@ public class TextureParameters {
 	}
 	
 	/* The other constructors */
+	public TextureParameters(int target) {
+		this.target = target;
+		this.filter = DEFAULT_FILTER;
+		this.clamp  = DEFAULT_CLAMP;
+		this.shouldClamp = DEFAULT_SHOULD_CLAMP;
+	}
+	
+	public TextureParameters(int target, boolean shouldClamp) {
+		this.target = target;
+		this.filter = DEFAULT_FILTER;
+		this.clamp  = DEFAULT_CLAMP;
+		this.shouldClamp = shouldClamp;
+	}
+	
 	public TextureParameters(int target, int filter, boolean shouldClamp) {
 		this.target = target;
 		this.filter = filter;
@@ -83,6 +98,8 @@ public class TextureParameters {
 		if (this.shouldClamp) {
 			GL11.glTexParameteri(this.target, GL11.GL_TEXTURE_WRAP_S, this.clamp);
 			GL11.glTexParameteri(this.target, GL11.GL_TEXTURE_WRAP_T, this.clamp);
+			if (this.target == GL13.GL_TEXTURE_CUBE_MAP)
+				GL11.glTexParameteri(this.target, GL12.GL_TEXTURE_WRAP_R, this.clamp);
 		}
 		//Check to see whether the filter uses mipmapping
 		if (filter == GL11.GL_NEAREST_MIPMAP_NEAREST ||

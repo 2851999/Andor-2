@@ -16,22 +16,30 @@
  *
  *****************************************************************************/
 
-package org.andor.core.thread;
+package org.andor.physics;
 
-import org.andor.Settings;
-import org.andor.physics.PhysicsEngine;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PhysicsThread extends EngineThread {
+import org.andor.core.BaseObject;
+
+public class PhysicsEngine {
 	
-	/* The constructor */
-	public PhysicsThread() {
-		super("Physics", Settings.Physics.MaxFPS);
+	/* The objects added to the physics engine */
+	private static List<BaseObject> objects = new ArrayList<BaseObject>();
+	
+	/* The static method used to update all of the objects */
+	public static void update(int delta) {
+		//Calculate the delta in seconds
+		float deltaSeconds = ((float) delta) / 1000f;
+		//Go through the objects
+		for (int a = 0; a < objects.size(); a++)
+			objects.get(a).update(deltaSeconds);
 	}
 	
-	/* The method called every time this thread is executed */
-	public void update() {
-		//Update the physics engine
-		PhysicsEngine.update((int) this.getDelta());
-	}
+	/* The static methods used to add or remove objects */
+	public static void add(BaseObject object) { objects.add(object); }
+	public static void remove(BaseObject object) { objects.remove(object); }
+	
 	
 }

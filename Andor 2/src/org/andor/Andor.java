@@ -24,7 +24,7 @@ import org.andor.core.resource.texture.Texture;
 public class Andor {
 	
 	/* The current version */
-	public static final String VERSION = "V2.0.1";
+	public static final String VERSION = "V2.0.0";
 	
 	/* The nickname of this version */
 	public static final String VERSION_NAME = "Unknown At This Time";
@@ -33,7 +33,7 @@ public class Andor {
 	public static final String BUILD_TYPE = "Experimental";
 	
 	/* The date this build started development */
-	public static final String DATE = "30/07/2015";
+	public static final String DATE = "07/08/2015";
 	
 	/* The default engine resources */
 	public static class Resources {

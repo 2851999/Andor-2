@@ -1,4 +1,52 @@
 -------------------------------------------------------------
+Release 0 | Beta 0 | Development 0 | Experimental 2
+
+This commit adds some more features, some of which were in
+the original engine, however some have been updated and new
+ones have been added. Here is a list of some of the changes:
+
+* The SkyBox now uses a cubemap
+* Basic physics properties have been added
+* Texture animations now accept a tile sheet
+* Collada support is being added as part of the project
+  to add skeletal animation
+
+* Added Animation2D
+* Added ColourAnimation2D
+* Added Sprite2D
+* Added TextureAnimation2D
+* Added TextureEntity2D
+* Added ANGeometry
+* Added ANModel
+* Added Model
+* Added Renderer
+* Added TextureCubemap
+* Added EngineThread
+* Added PhysicsEngine
+* Added XMLDocument
+* Added Accessor
+* Added Collada
+* Added ColladaParser
+* Added FloatArray
+* Added Geometry
+* Added Input
+* Added LibraryGeometry
+* Added Mesh
+* Added P
+* Added Polylist
+* Added Source
+* Added TechniqueCommon
+* Added Vertices
+* Added ModelTest
+* Added SoundTest
+* Added SkyBoxUtils
+
+* Created the package org.andor.core.model
+* Created the package org.andor.physics
+* Created the package org.andor.processor
+* Created the package org.andor.processor.collada
+
+-------------------------------------------------------------
 Release 0 | Beta 0 | Development 0 | Experimental 1
 
 This is the first commit after starting a partial rewrite of

@@ -18,12 +18,8 @@
 
 package org.andor.core.render;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.andor.Andor;
 import org.andor.Settings;
-import org.andor.core.Camera;
 import org.andor.core.Matrix4f;
 import org.andor.core.resource.shader.Shader;
 import org.andor.utils.BufferUtils;
@@ -33,40 +29,33 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public class ForwardRenderer {
-	
-	/* The main shader */
-	public static Shader shader;
-	
-	/* The camera's */
-	public static List<Camera> cameras = new ArrayList<Camera>();
+public class ForwardRenderer extends Renderer {
 	
 	/* The static method used to initialise this renderer */
-	public static void initialise() {
-		//Setup the shader
-		shader = Settings.Resource.Manager.loadShader("BasicShader");
-		shader.bind();
-		shader.addUniform("ModelViewProjectionMatrix", "mvp");
-		shader.addUniform("Texture", "texture");
-		shader.addAttribute("Vertex", "vertex");
-		shader.addAttribute("Colour", "colour");
-		shader.addAttribute("TextureCoordinate", "textureCoordinate");
-		shader.addAttribute("Normal", "normal");
-		shader.unbind();
+	public ForwardRenderer() {
+		super(Settings.Resource.Manager.loadShader("BasicShader"));
 	}
 	
 	/* The static method used to render something */
-	public static void render(RenderData data, Matrix4f modelMatrix) {
+	public void renderData(RenderData data, Matrix4f modelMatrix) {
+		//Get the shader
+		Shader currentShader = getShader();
 		//Get various shader locations
-		int vertexArray = shader.getAttributeLocation("Vertex");
-		int colourArray = shader.getAttributeLocation("Colour");
-		int textureCoordinateArray = shader.getAttributeLocation("TextureCoordinate");
-		int normalArray = shader.getAttributeLocation("Normal");
+		int vertexArray = currentShader.getAttributeLocation("Vertex");
+		int colourArray = -1;
+		int textureCoordinateArray = -1;
+		int normalArray = -1;
+		if (data.hasColours())
+			colourArray = currentShader.getAttributeLocation("Colour");
+		if (data.hasTextureCoordinates())
+			textureCoordinateArray = currentShader.getAttributeLocation("TextureCoordinate");
+		if (data.hasNormals())
+			normalArray = currentShader.getAttributeLocation("Normal");
 		//Use the shader
-		shader.bind();
+		currentShader.bind();
 		//Make sure a camera has been set
 		if (cameras.size() > 0)
-			shader.setUniformMatrix4fv("ModelViewProjectionMatrix", BufferUtils.createFlippedBuffer(cameras.get(cameras.size() - 1).getProjectionViewMatrix().multiply(modelMatrix).transpose().getValues()));
+			currentShader.setUniformMatrix4fv("ModelViewProjectionMatrix", BufferUtils.createFlippedBuffer(getCamera().getProjectionViewMatrix().multiply(modelMatrix).transpose().getValues()));
 		else
 			Logger.log("Andor - ForwardRenderer", "Main camera not set, nothing will be able to render!");
 		//Check the material
@@ -78,7 +67,7 @@ public class ForwardRenderer {
 		} else
 			Andor.Resources.Textures.Blank.bind();
 		
-		shader.setUniformf("Texture", 0);
+		currentShader.setUniformf("Texture", 0);
 		
 		//Bind the vao and enable the arrays
 		GL30.glBindVertexArray(data.getVAO());
@@ -115,12 +104,7 @@ public class ForwardRenderer {
 			Andor.Resources.Textures.Blank.unbind();
 		
 		GL30.glBindVertexArray(0);
-		shader.unbind();
+		currentShader.unbind();
 	}
-	
-	/* The methods used to add or remove a camera */
-	public static void add(Camera camera) { cameras.add(camera); }
-	public static void remove(Camera camera) { cameras.remove(camera); }
-	public static void removeCamera() { cameras.remove(cameras.size() - 1); }
 	
 }

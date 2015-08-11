@@ -18,6 +18,9 @@
 
 package org.andor.core;
 
+import org.andor.Settings;
+import org.andor.utils.MathUtils;
+
 public class Camera3D extends Object3D implements Camera {
 	
 	/* The projection matrix */
@@ -36,10 +39,10 @@ public class Camera3D extends Object3D implements Camera {
 	public boolean useSkyBox;
 	
 	/* The constructors */
-	public Camera3D(Matrix4f projectionMatrix) { super(); this.projectionMatrix = projectionMatrix; this.viewMatrix = new Matrix4f(); this.useSkyBox = true; }
-	public Camera3D(Matrix4f projectionMatrix, Vector3f position) { super(position); this.projectionMatrix = projectionMatrix; this.viewMatrix = new Matrix4f(); this.useSkyBox = true; }
-	public Camera3D(Matrix4f projectionMatrix, Vector3f position, Vector3f rotation) { super(position, rotation); this.projectionMatrix = projectionMatrix; this.viewMatrix = new Matrix4f(); this.useSkyBox = true; }
-	public Camera3D(Matrix4f projectionMatrix, Vector3f position, Vector3f rotation, Vector3f scale) { super(position, rotation, scale); this.projectionMatrix = projectionMatrix; this.viewMatrix = new Matrix4f(); this.useSkyBox = true; }
+	public Camera3D(Matrix4f projectionMatrix) { super(); this.projectionMatrix = projectionMatrix; this.viewMatrix = new Matrix4f(); this.useSkyBox = true; this.update(); }
+	public Camera3D(Matrix4f projectionMatrix, Vector3f position) { super(position); this.projectionMatrix = projectionMatrix; this.viewMatrix = new Matrix4f(); this.useSkyBox = true; this.update(); }
+	public Camera3D(Matrix4f projectionMatrix, Vector3f position, Vector3f rotation) { super(position, rotation); this.projectionMatrix = projectionMatrix; this.viewMatrix = new Matrix4f(); this.useSkyBox = true; this.update(); }
+	public Camera3D(Matrix4f projectionMatrix, Vector3f position, Vector3f rotation, Vector3f scale) { super(position, rotation, scale); this.projectionMatrix = projectionMatrix; this.viewMatrix = new Matrix4f(); this.useSkyBox = true; this.update(); }
 	
 	/* The method used to update this camera */
 	public void update() {
@@ -68,35 +71,35 @@ public class Camera3D extends Object3D implements Camera {
 	/* The method used to move the camera forwards relative to its rotation */
 	public void moveForward(float amount) {
 		//Move the camera 'forwards'
-		this.position.x -= amount * (float) Math.sin(Math.toRadians(this.getRotation().y));
-		this.position.z += amount * (float) Math.cos(Math.toRadians(this.getRotation().y));
+		this.position.x -= MathUtils.clamp(amount * (float) Math.sin(Math.toRadians(this.getRotation().y)), -amount, amount);
+		this.position.z += MathUtils.clamp(amount * (float) Math.cos(Math.toRadians(this.getRotation().y)), -amount, amount);
 		//Check whether flying is enabled
 		if (this.flying)
-			this.position.y += amount * (float) Math.tan(Math.toRadians(this.getRotation().x));
+			this.position.y += MathUtils.clamp(amount * (float) Math.tan(Math.toRadians(this.getRotation().x)), -amount, amount);
 	}
 	
 	/* The method used to move the camera backwards relative to its rotation */
 	public void moveBackward(float amount) {
 		//Move the camera 'backwards'
-		this.position.x += amount * (float) Math.sin(Math.toRadians(this.getRotation().y));
-		this.position.z -= amount * (float) Math.cos(Math.toRadians(this.getRotation().y));
+		this.position.x += MathUtils.clamp(amount * (float) Math.sin(Math.toRadians(this.getRotation().y)), -amount, amount);
+		this.position.z -= MathUtils.clamp(amount * (float) Math.cos(Math.toRadians(this.getRotation().y)), -amount, amount);
 		//Check whether flying is enabled
 		if (this.flying)
-			this.position.y -= amount * (float) Math.tan(Math.toRadians(this.getRotation().x));
+			this.position.y -= MathUtils.clamp(amount * (float) Math.tan(Math.toRadians(this.getRotation().x)), -amount, amount);
 	}
 	
 	/* The method used to move the camera left relative to its rotation */
 	public void moveLeft(float amount) {
 		//Move the camera 'left'
-		this.position.x -= amount * (float) Math.sin(Math.toRadians(this.getRotation().y - 90));
-		this.position.z += amount * (float) Math.cos(Math.toRadians(this.getRotation().y - 90));
+		this.position.x -= MathUtils.clamp(amount * (float) Math.sin(Math.toRadians(this.getRotation().y - 90)), -amount, amount);
+		this.position.z += MathUtils.clamp(amount * (float) Math.cos(Math.toRadians(this.getRotation().y - 90)), -amount, amount);
 	}
 	
 	/* The method used to move the camera right relative to its rotation */
 	public void moveRight(float amount) {
 		//Move the camera 'right'
-		this.position.x += amount * (float) Math.sin(Math.toRadians(this.getRotation().y - 90));
-		this.position.z -= amount * (float) Math.cos(Math.toRadians(this.getRotation().y - 90));
+		this.position.x += MathUtils.clamp(amount * (float) Math.sin(Math.toRadians(this.getRotation().y - 90)), -amount, amount);
+		this.position.z -= MathUtils.clamp(amount * (float) Math.cos(Math.toRadians(this.getRotation().y - 90)), -amount, amount);
 	}
 	
 	/* The setters and getters */
@@ -110,5 +113,22 @@ public class Camera3D extends Object3D implements Camera {
 	public Matrix4f getProjectionViewMatrix() { return this.projectionMatrix.multiply(this.viewMatrix); }
 	public boolean isFlying() { return this.flying; }
 	public SkyBox getSkyBox() { return this.skyBox; }
+	
+	/* The static methods used to create a camera */
+	public static Camera3D createOrtho(float zNear, float zFar) {
+		return new Camera3D(new Matrix4f().initOrtho(0, Settings.Window.Width, Settings.Window.Height, 0, zNear, zFar));
+	}
+	
+	public static Camera3D createOrtho(float left, float right, float bottom, float top, float zNear, float zFar) {
+		return new Camera3D(new Matrix4f().initOrtho(left, right, top, bottom, zNear, zFar));
+	}
+	
+	public static Camera3D createPerspective(float fov, float zNear, float zFar) {
+		return new Camera3D(new Matrix4f().initPerspective(fov, (float) Settings.Window.Width / (float) Settings.Window.Height, zNear, zFar));
+	}
+	
+	public static Camera3D createPerspective(float fov, float aspect, float zNear, float zFar) {
+		return new Camera3D(new Matrix4f().initPerspective(fov, aspect, zNear, zFar));
+	}
 	
 }

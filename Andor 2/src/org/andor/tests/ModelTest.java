@@ -21,28 +21,26 @@ package org.andor.tests;
 import org.andor.Settings;
 import org.andor.core.BaseGame;
 import org.andor.core.Camera3D;
-import org.andor.core.Colour;
 import org.andor.core.Matrix4f;
-import org.andor.core.Object3DBuilder;
-import org.andor.core.RenderableObject3D;
 import org.andor.core.ScreenResolution;
 import org.andor.core.SkyBox;
 import org.andor.core.Vector3f;
 import org.andor.core.input.Keyboard;
 import org.andor.core.input.Mouse;
+import org.andor.core.model.Model;
 import org.andor.core.render.Renderer;
-import org.andor.core.resource.texture.Texture;
 import org.andor.core.resource.texture.TextureParameters;
-import org.andor.core.resource.texture.TextureSet;
+import org.andor.processor.XMLDocument;
+import org.andor.processor.collada.Collada;
+import org.andor.processor.collada.ColladaParser;
 import org.andor.utils.OpenGLUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-public class CubeTest extends BaseGame {
+public class ModelTest extends BaseGame {
 	
 	public volatile Camera3D camera;
-	public volatile RenderableObject3D cube;
-	public volatile RenderableObject3D bigCube;
+	public volatile Model model;
 	public boolean wireframe;
 	
 	/* The method called to initialise the game */
@@ -65,28 +63,17 @@ public class CubeTest extends BaseGame {
 		String path = "H:/Andor/";
 		this.camera.setSkyBox(new SkyBox(path + "skybox6.jpg", true, 100));
 		
-		TextureSet textures = new TextureSet();
-		Texture grassSide = textures.load(path + "Grass_Side.png", true);
-		Texture grass = textures.load(path + "Grass.png", true);
-		Texture dirt = textures.load(path + "Dirt.png", true);
-		Texture texture = textures.join();
-		//Create the cube
-		cube = new RenderableObject3D(Object3DBuilder.createCube(1, 1, 1, new Texture[] {
-				grassSide, grassSide, grassSide, grassSide,
-				grass, dirt
-		}, Colour.WHITE));
-		cube.getRenderData().getMaterial().setDiffuseTexture(texture);
-		bigCube = new RenderableObject3D(Object3DBuilder.createCube(10, 10, 10, new Colour[] { new Colour(Colour.RED, 0.3f), new Colour(Colour.GREEN, 0.3f), new Colour(Colour.BLUE, 0.3f) }));
+		//Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/box.dae", true));
+		Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/Sponza/sponza.dae", true));
+		model = collada.convert().createModel();
+		model.scale.multiply(0.1f);
+		model.update();
 		
 		Mouse.lock();
 	}
 	
 	/* The method called to update the game */
 	public void update() {
-		cube.rotation.add(0.1f * getDelta());
-		cube.update();
-		bigCube.rotation.add(-0.1f * getDelta());
-		bigCube.update();
 		if (Keyboard.isPressed(GLFW.GLFW_KEY_W))
 			camera.moveForward(0.01f * getDelta());
 		if (Keyboard.isPressed(GLFW.GLFW_KEY_S))
@@ -105,8 +92,7 @@ public class CubeTest extends BaseGame {
 		OpenGLUtils.setupRemoveAlpha();
 		
 		this.camera.useView();
-		this.cube.render();
-		this.bigCube.render();
+		this.model.render();
 	}
 	
 	public void onKeyPressed(int code) {
@@ -128,7 +114,7 @@ public class CubeTest extends BaseGame {
 	}
 	
 	public static void main(String[] args) {
-		new CubeTest();
+		new ModelTest();
 	}
 	
 }

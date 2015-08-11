@@ -16,22 +16,27 @@
  *
  *****************************************************************************/
 
-package org.andor.core.thread;
+package org.andor.core.model;
 
-import org.andor.Settings;
-import org.andor.physics.PhysicsEngine;
+import org.andor.core.Colour;
+import org.andor.core.render.RenderData;
+import org.lwjgl.opengl.GL11;
 
-public class PhysicsThread extends EngineThread {
+public class ANGeometry {
 	
-	/* The constructor */
-	public PhysicsThread() {
-		super("Physics", Settings.Physics.MaxFPS);
-	}
+	/* The data stored in this geometry */
+	public int numberOfVertices;
+	public float[] vertices;
+	public float[] normals;
+	public float[] textureCoordinates;
+	public short[] indices;
 	
-	/* The method called every time this thread is executed */
-	public void update() {
-		//Update the physics engine
-		PhysicsEngine.update((int) this.getDelta());
+	/* The method used to construct render data for this geometry */
+	public RenderData createRenderData() {
+		RenderData data = new RenderData(GL11.GL_TRIANGLES, true, true, true, true);
+		data.setup(3, vertices, null, normals, textureCoordinates, indices);
+		data.updateColour(Colour.WHITE);
+		return data;
 	}
 	
 }

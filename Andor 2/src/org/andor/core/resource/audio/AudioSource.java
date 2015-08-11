@@ -18,27 +18,44 @@
 
 package org.andor.core.resource.audio;
 
+import org.andor.Settings;
 import org.andor.core.Vector3f;
+import org.andor.utils.Logger;
 import org.lwjgl.openal.AL10;
 
 public class AudioSource extends AudioObject {
+	
+	/* The two types of source */
+	public static final int TYPE_SOUND_EFFECT = 1;
+	public static final int TYPE_MUSIC = 2;
+	
+	/* The type of audio source this is */
+	public int type;
 	
 	/* The various pieces of data used to generate and play sounds */
 	private int sourceHandle;
 	private int bufferHandle;
 	
-	public float pitch;
-	public float gain;
+	private float pitch;
+	private float gain;
 	
 	public boolean loop;
 	
 	/* The constructor */
-	public AudioSource(AudioData data) {
+	public AudioSource(AudioData data, int type) {
 		//Setup the variables
+		this.type = type;
 		this.sourceHandle = AL10.alGenSources();
 		this.bufferHandle = AL10.alGenBuffers();
-		this.pitch = 1.0f;
-		this.gain = 1.0f;
+		this.pitch = 1f;
+		if (type == TYPE_SOUND_EFFECT)
+			this.gain = (float) (Settings.Audio.SoundEffectVolume) / 100f;
+		else if (type == TYPE_MUSIC)
+			this.gain = (float) (Settings.Audio.MusicVolume) / 100f;
+		else {
+			this.gain = 1f;
+			Logger.log("Andor - AudioSource", "Unknown audio type " + type);
+		}
 		this.loop = false;
 		//Setup OpenAL
 		AL10.alBufferData(this.bufferHandle, data.getFormat(), data.getData(), data.getSampleRate());
@@ -48,6 +65,18 @@ public class AudioSource extends AudioObject {
 		AL10.alSourcei(this.sourceHandle, AL10.AL_BUFFER, this.bufferHandle);
 		//Add this to the list of audio resources
 		AudioManager.add(this);
+	}
+	
+	/* The method used to update and recalculate the volume of this source */
+	public void updateVolume() {
+		if (type == TYPE_SOUND_EFFECT)
+			this.gain = (float) (Settings.Audio.SoundEffectVolume) / 100f;
+		else if (type == TYPE_MUSIC)
+			this.gain = (float) (Settings.Audio.MusicVolume) / 100f;
+		else {
+			this.gain = 1f;
+			Logger.log("Andor - AudioSource", "Unknown audio type " + type);
+		}
 	}
 	
 	/* The method used to update this source */

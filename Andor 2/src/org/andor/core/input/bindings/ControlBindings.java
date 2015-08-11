@@ -49,6 +49,7 @@ public class ControlBindings {
 			binding.setBindings(this);
 		this.bindings.add(binding); 
 	}
+	
 	public void add(ControlListenerInterface listener) { this.listeners.add(listener); }
 	public void remove(ControlBinding binding) { this.bindings.remove(binding); }
 	public void remove(ControlListenerInterface listener) { this.listeners.remove(listener); }

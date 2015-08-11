@@ -16,22 +16,31 @@
  *
  *****************************************************************************/
 
-package org.andor.core.thread;
+package org.andor.core.model;
 
-import org.andor.Settings;
-import org.andor.physics.PhysicsEngine;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PhysicsThread extends EngineThread {
+import org.andor.core.RenderableObject3D;
+import org.andor.core.render.RenderData;
+import org.andor.core.render.Renderer;
+
+public class Model extends RenderableObject3D {
+	
+	/* The render data */
+	public List<RenderData> data;
 	
 	/* The constructor */
-	public PhysicsThread() {
-		super("Physics", Settings.Physics.MaxFPS);
+	public Model() {
+		super(null);
+		this.data = new ArrayList<RenderData>();
 	}
 	
-	/* The method called every time this thread is executed */
-	public void update() {
-		//Update the physics engine
-		PhysicsEngine.update((int) this.getDelta());
+	/* The method used to render this model */
+	public void render() {
+		//Go through the data and render it
+		for (int a = 0; a < data.size(); a++)
+			Renderer.render(data.get(a), this.getModelMatrix());
 	}
 	
 }

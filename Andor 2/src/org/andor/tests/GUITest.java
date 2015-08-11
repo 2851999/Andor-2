@@ -24,7 +24,7 @@ import org.andor.core.Camera2D;
 import org.andor.core.Colour;
 import org.andor.core.Matrix4f;
 import org.andor.core.Vector2f;
-import org.andor.core.render.ForwardRenderer;
+import org.andor.core.render.Renderer;
 import org.andor.gui.GUIBorder;
 import org.andor.gui.GUIButton;
 import org.andor.gui.GUICheckBox;
@@ -167,7 +167,7 @@ public class GUITest extends BaseGame implements GUIComponentListener {
 		
 		camera = new Camera2D(new Matrix4f().initOrtho(0, Settings.Window.Width, Settings.Window.Height, 0, -1, 1));
 		camera.update();
-		ForwardRenderer.add(this.camera);
+		Renderer.addCamera(this.camera);
 		
 		Logger.timeEnabled = false;
 	}

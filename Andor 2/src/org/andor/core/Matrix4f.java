@@ -97,7 +97,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f initFrustum(float left, float right, float top, float bottom, float zNear, float zFar) {
+	public Matrix4f initFrustum(float left, float right, float bottom, float top, float zNear, float zFar) {
 		this.setFrustum(left, right, bottom, top, zNear, zFar);
 		return this;
 	}

@@ -23,6 +23,9 @@ public class BaseObject {
 	/* The method used to update this object */
 	public void update() {}
 	
+	/* The method used to update the physics of this object */
+	public void update(float deltaSeconds) {}
+	
 	/* The method used to render this object */
 	public void render() {}
 	

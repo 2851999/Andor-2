@@ -27,6 +27,8 @@ import org.andor.core.Matrix4f;
 import org.andor.core.Object2DBuilder;
 import org.andor.core.RenderableObject2D;
 import org.andor.core.ScreenResolution;
+import org.andor.core.Sprite2D;
+import org.andor.core.TextureAnimation2D;
 import org.andor.core.input.Controller;
 import org.andor.core.input.ControllerAxis;
 import org.andor.core.input.ControllerButton;
@@ -34,14 +36,16 @@ import org.andor.core.input.InputManager;
 import org.andor.core.input.bindings.ControlBinding;
 import org.andor.core.input.bindings.ControlBindings;
 import org.andor.core.input.bindings.ControlListenerInterface;
-import org.andor.core.render.ForwardRenderer;
 import org.andor.core.render.RenderData;
+import org.andor.core.render.Renderer;
 import org.andor.core.resource.audio.AudioListener;
 import org.andor.core.resource.audio.AudioLoader;
 import org.andor.core.resource.audio.AudioSource;
 import org.andor.core.resource.texture.Texture;
+import org.andor.core.resource.texture.TextureLoader;
 import org.andor.core.resource.texture.TextureParameters;
 import org.andor.gui.GUIButton;
+import org.andor.physics.PhysicsEngine;
 import org.andor.utils.ControllerUtils;
 import org.andor.utils.FontUtils;
 import org.andor.utils.Logger;
@@ -58,6 +62,8 @@ public class EngineTest extends BaseGame implements ControlListenerInterface {
 	public GUIButton button;
 	public AudioListener listener;
 	public AudioSource source;
+	
+	public Sprite2D sprite;
 	
 	/* The method called to initialise the game */
 	public void initialise() {
@@ -95,10 +101,12 @@ public class EngineTest extends BaseGame implements ControlListenerInterface {
 		object.setScale(0.5f, 0.5f);
 		
 		object.getRenderData().updateColour(Colour.ARRAY_BLUE);
+		object.angularVelocity = 2060;
+		PhysicsEngine.add(object);
 		
 		camera = new Camera2D(new Matrix4f().initOrtho(0, Settings.Window.Width, Settings.Window.Height, 0, -1, 1));
 		camera.update();
-		ForwardRenderer.add(this.camera);
+		Renderer.addCamera(this.camera);
 		
 		font = FontUtils.createBitmapFont("Segoe UI", Colour.ARRAY_SUNSET, 40);
 		font.bitmapFont.update();
@@ -107,10 +115,16 @@ public class EngineTest extends BaseGame implements ControlListenerInterface {
 		this.button.setPosition(Settings.Window.Width / 2 - 100, Settings.Window.Height - 100);
 		
 		this.listener = new AudioListener();
-		this.source = new AudioSource(AudioLoader.load("H:/Storage/Users/Joel/Desktop/test.ogg", true));
+		this.source = new AudioSource(AudioLoader.load("H:/Storage/Users/Joel/Desktop/test.ogg", true), AudioSource.TYPE_MUSIC);
 		this.listener.update();
 		this.source.update();
 		this.source.play();
+		
+		Texture campfire = TextureLoader.load("H:/Storage/Users/Joel/Desktop/explosion.png", true);
+		sprite = new Sprite2D(campfire, 256, 256);
+		sprite.setPosition(Settings.Window.Width / 2 - 128, Settings.Window.Height / 2 - 256);
+		sprite.add(new TextureAnimation2D(sprite, campfire, 8, 8, 15, true), "Campfire", 1);
+		sprite.start(1);
 	}
 	
 	/* The method called to update the game */
@@ -118,6 +132,7 @@ public class EngineTest extends BaseGame implements ControlListenerInterface {
 		object.setRotation(object.getRotation() + 3.48f * getDelta());
 		object.update();
 		this.button.update();
+		sprite.update();
 	}
 	
 	/* The method called to render the game */
@@ -129,6 +144,7 @@ public class EngineTest extends BaseGame implements ControlListenerInterface {
 		OpenGLUtils.setupRemoveAlpha();
 		font.render("HELLO WORLD", Settings.Window.Width / 2 - font.getWidth("HELLO WORLD") / 2, 10);
 		this.button.render();
+		sprite.render();
 	}
 	
 	/* The method called when the engine is stopping */

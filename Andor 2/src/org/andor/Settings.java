@@ -66,9 +66,18 @@ public class Settings {
 		public static boolean KeyboardEventsRepeat = true;
 	}
 	
+	/* The physics settings */
+	public static class Physics {
+		/* The maximum FPS */
+		public static int MaxFPS = 60;
+	}
+	
 	/* The audio settings */
 	public static class Audio {
-		
+		/* The volume of the sound effects */
+		public static int SoundEffectVolume = 100;
+		/* The volume of the music */
+		public static int MusicVolume = 100;
 	}
 	
 	/* The debugging settings */

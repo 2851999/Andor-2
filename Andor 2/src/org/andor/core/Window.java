@@ -35,6 +35,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
@@ -59,8 +60,6 @@ public class Window {
 		GLFW.glfwDefaultWindowHints();
 		
 		//Setup the hints
-		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, OpenGLUtils.getValue(Settings.Window.Resizable));
-		GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, OpenGLUtils.getValue(! Settings.Window.Undecorated));
 		GLFW.glfwWindowHint(GLFW.GLFW_FLOATING, OpenGLUtils.getValue(Settings.Window.Floating));
 		
 		if (Settings.Video.Samples != 0)
@@ -72,9 +71,20 @@ public class Window {
 		long monitor = 0;
 		if (Settings.Window.Fullscreen) {
 			monitor = GLFW.glfwGetPrimaryMonitor();
-			GLFW.glfwWindowHint(GLFW.GLFW_REFRESH_RATE, GLFW.GLFW_DONT_CARE);
+			if (Settings.Window.Borderless) {
+				ByteBuffer videoMode = GLFW.glfwGetVideoMode(monitor);
+				GLFW.glfwWindowHint(GLFW.GLFW_RED_BITS, GLFWvidmode.redBits(videoMode));
+				GLFW.glfwWindowHint(GLFW.GLFW_GREEN_BITS, GLFWvidmode.greenBits(videoMode));
+				GLFW.glfwWindowHint(GLFW.GLFW_BLUE_BITS, GLFWvidmode.blueBits(videoMode));
+				GLFW.glfwWindowHint(GLFW.GLFW_REFRESH_RATE, GLFWvidmode.refreshRate(videoMode));
+				Settings.Video.Resolution = new ScreenResolution(GLFWvidmode.width(videoMode), GLFWvidmode.height(videoMode));
+			} else
+				GLFW.glfwWindowHint(GLFW.GLFW_REFRESH_RATE, GLFW.GLFW_DONT_CARE);
 			//Assign the settings
 			Settings.Window.Resolution = Settings.Video.Resolution;
+		} else {
+			GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, OpenGLUtils.getValue(! Settings.Window.Undecorated));
+			GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, OpenGLUtils.getValue(Settings.Window.Resizable));
 		}
 		
 		//Create the instance

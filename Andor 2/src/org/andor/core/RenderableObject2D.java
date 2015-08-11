@@ -18,8 +18,9 @@
 
 package org.andor.core;
 
-import org.andor.core.render.ForwardRenderer;
 import org.andor.core.render.RenderData;
+import org.andor.core.render.Renderer;
+import org.andor.core.resource.texture.Texture;
 
 public class RenderableObject2D extends Object2D {
 	
@@ -34,6 +35,7 @@ public class RenderableObject2D extends Object2D {
 		//Assign the variables
 		this.renderData = renderData;
 		this.modelMatrix = new Matrix4f();
+		this.update();
 	}
 	
 	public RenderableObject2D(RenderData renderData, float width, float height) {
@@ -58,12 +60,16 @@ public class RenderableObject2D extends Object2D {
 	public void render() {
 		if (this.modelMatrix == null)
 			this.update();
-		ForwardRenderer.render(this.renderData, this.modelMatrix);
+		Renderer.render(this.renderData, this.modelMatrix);
 	}
 	
 	/* The setters and getters */
 	public void setRenderData(RenderData renderData) { this.renderData = renderData; }
 	public void setModelMatrix(Matrix4f modelMatrix) { this.modelMatrix = modelMatrix; }
+	public void setTexture(Texture texture) { this.renderData.getMaterial().setDiffuseTexture(texture); }
+	public void setColour(Colour colour) {
+		this.renderData.updateColour(colour);
+	}
 	public RenderData getRenderData() { return this.renderData; }
 	public Matrix4f getModelMatrix() { return this.modelMatrix; }
 	
