@@ -18,11 +18,21 @@
 
 package org.andor.core.resource.audio;
 
+import org.andor.core.Object3D;
+import org.andor.core.Vector2f;
 import org.andor.core.Vector3f;
 import org.andor.utils.BufferUtils;
 import org.lwjgl.openal.AL10;
 
 public class AudioListener extends AudioObject {
+	
+	/* The default constructor */
+	public AudioListener() {}
+	
+	/* The other constructors */
+	public AudioListener(Object3D object) { super(object); }
+	public AudioListener(Vector2f position) { super(position); }
+	public AudioListener(Vector3f position) { super(position); }
 	
 	/* The method used to update this listener */
 	public void update() {

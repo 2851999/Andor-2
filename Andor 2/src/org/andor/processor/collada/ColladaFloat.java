@@ -18,40 +18,36 @@
 
 package org.andor.processor.collada;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public class LibraryGeometry {
+public class ColladaFloat {
 	
-	/* The geometries */
-	public List<Geometry> geometries;
+	/* The sid */
+	public String sid;
+	
+	/* The value */
+	public float value;
 	
 	/* The constructor */
-	public LibraryGeometry() {
-		this.geometries = new ArrayList<Geometry>();
+	public ColladaFloat() {
+		
 	}
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
-		//Get the nodes
-		NodeList nodes = parent.getChildNodes();
-		//Go through the nodes
-		for (int a = 0; a < nodes.getLength(); a++) {
-			//Get the current node
-			Node node = nodes.item(a);
-			//Check the current node
-			if (node.getNodeName().equals("geometry")) {
-				//Create the geometry
-				Geometry geometry = new Geometry();
-				//Parse the geometry
-				geometry.parse(node);
-				//Add the geometry
-				this.geometries.add(geometry);
-			}
+		//Get the attributes
+		NamedNodeMap attributes = parent.getAttributes();
+		//Go through the attributes
+		for (int a = 0; a < attributes.getLength(); a++) {
+			//Get the attribute
+			Node attribute = attributes.item(a);
+			//Check the current attributes name and assign the correct value
+			if (attribute.getNodeName().equals("sid"))
+				this.sid = attribute.getNodeValue();
 		}
+		//Assign the value
+		this.value = Float.parseFloat(parent.getTextContent());
 	}
 	
 }

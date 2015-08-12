@@ -22,17 +22,17 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Geometry {
+public class ColladaImage {
 	
 	/* The id and name */
 	public String id;
 	public String name;
 	
-	/* The mesh */
-	public Mesh mesh;
+	/* The init_from instance */
+	public ColladaInitFrom initFrom;
 	
 	/* The constructor */
-	public Geometry() {
+	public ColladaImage() {
 		
 	}
 	
@@ -56,9 +56,9 @@ public class Geometry {
 			//Get the current node
 			Node node = nodes.item(a);
 			//Check the name of the current node
-			if (node.getNodeName().equals("mesh")) {
-				this.mesh = new Mesh();
-				this.mesh.parse(node);
+			if (node.getNodeName().equals("init_from")) {
+				this.initFrom = new ColladaInitFrom();
+				this.initFrom.parse(node);
 			}
 		}
 	}

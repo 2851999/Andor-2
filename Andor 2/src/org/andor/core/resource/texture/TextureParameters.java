@@ -31,7 +31,7 @@ public class TextureParameters {
 	public static int DEFAULT_TARGET = GL11.GL_TEXTURE_2D;
 	public static int DEFAULT_FILTER = GL11.GL_NEAREST;
 	public static int DEFAULT_CLAMP  = GL12.GL_CLAMP_TO_EDGE;
-	public static boolean DEFAULT_SHOULD_CLAMP = true;
+	public static boolean DEFAULT_SHOULD_CLAMP = false;
 	
 	/* The various pre-made texture parameters */
 	public static TextureParameters DEFAULT = new TextureParameters();

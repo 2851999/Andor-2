@@ -20,21 +20,17 @@ package org.andor.processor.collada;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public class Source {
+public class ColladaColor {
 	
-	/* The id of this source */
-	public String id;
+	/* The sid */
+	public String sid;
 	
-	/* The float array within this source */
-	public FloatArray floatArray;
-	
-	/* The technique common within this source */
-	public TechniqueCommon techniqueCommon;
+	/* The values */
+	public float[] values;
 	
 	/* The constructor */
-	public Source() {
+	public ColladaColor() {
 		
 	}
 	
@@ -47,24 +43,16 @@ public class Source {
 			//Get the attribute
 			Node attribute = attributes.item(a);
 			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("id"))
-				id = attribute.getNodeValue();
+			if (attribute.getNodeName().equals("sid"))
+				this.sid = attribute.getNodeValue();
 		}
-		//Get the nodes
-		NodeList nodes = parent.getChildNodes();
-		//Go through the nodes
-		for (int a = 0; a < nodes.getLength(); a++) {
-			//Get the current node
-			Node node = nodes.item(a);
-			//Check the name of the current node
-			if (node.getNodeName().equals("float_array")) {
-				this.floatArray = new FloatArray();
-				this.floatArray.parse(node);
-			} else if (node.getNodeName().equals("technique_common")) {
-				this.techniqueCommon = new TechniqueCommon();
-				this.techniqueCommon.parse(node);
-			}
-		}
+		//Get the values from the node
+		String[] split = parent.getTextContent().split(" ");
+		//Create the values object
+		this.values = new float[split.length];
+		//Assign the values
+		for (int a = 0; a < this.values.length; a++)
+			this.values[a] = Float.parseFloat(split[a]);
 	}
 	
 }

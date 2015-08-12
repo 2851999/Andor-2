@@ -19,6 +19,7 @@
 package org.andor.core.model;
 
 import org.andor.core.Colour;
+import org.andor.core.render.Material;
 import org.andor.core.render.RenderData;
 import org.lwjgl.opengl.GL11;
 
@@ -31,9 +32,11 @@ public class ANGeometry {
 	public float[] textureCoordinates;
 	public short[] indices;
 	
+	public Material material;
+	
 	/* The method used to construct render data for this geometry */
 	public RenderData createRenderData() {
-		RenderData data = new RenderData(GL11.GL_TRIANGLES, true, true, true, true);
+		RenderData data = new RenderData(GL11.GL_TRIANGLES, true, true, true, true, this.material);
 		data.setup(3, vertices, null, normals, textureCoordinates, indices);
 		data.updateColour(Colour.WHITE);
 		return data;

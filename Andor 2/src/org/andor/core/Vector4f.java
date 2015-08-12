@@ -44,6 +44,20 @@ public class Vector4f {
 		this.w = w;
 	}
 	
+	public Vector4f(Vector3f vector) {
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = vector.z;
+		this.w = 0;
+	}
+	
+	public Vector4f(Vector3f vector, float w) {
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = vector.z;
+		this.w = w;
+	}
+	
 	/* The methods used to perform operations on this vector */
 	public Vector4f addX(float x) { this.x += x; return this; }
 	public Vector4f addY(float y) { this.y += y; return this; }

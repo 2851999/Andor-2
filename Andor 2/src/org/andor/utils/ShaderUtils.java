@@ -33,6 +33,12 @@ public class ShaderUtils {
 		return new Shader(createShader(path + ".vs", external, GL20.GL_VERTEX_SHADER), createShader(path + ".fs", external, GL20.GL_FRAGMENT_SHADER));
 	}
 	
+	/* The static method used to create a complete shader */
+	public static Shader createShader(String path, String vertexExtension, String fragmentExtension, boolean external) {
+		//Load the shader and return it
+		return new Shader(createShader(path + vertexExtension, external, GL20.GL_VERTEX_SHADER), createShader(path + fragmentExtension, external, GL20.GL_FRAGMENT_SHADER));
+	}
+	
 	/* The static method used to create a shader and return it */
 	public static int createShader(String path, boolean external, int shaderType) {
 		//The string builder

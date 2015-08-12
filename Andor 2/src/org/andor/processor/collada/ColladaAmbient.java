@@ -18,36 +18,28 @@
 
 package org.andor.processor.collada;
 
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Vertices {
+public class ColladaAmbient {
 	
-	/* The id */
-	public String id;
+	/* The colour instance */
+	public ColladaColor color;
 	
-	/* The input */
-	public Input input;
+	/* The texture instance */
+	public ColladaTexture texture;
 	
 	/* The constructor */
-	public Vertices() {
+	public ColladaAmbient() {
 		
 	}
 	
+	/* The methods used to check whether a value is present */
+	public boolean hasColor() { return this.color != null; }
+	public boolean hasTexture() { return this.texture != null; }
+	
 	/* The method used for parsing */
 	public void parse(Node parent) {
-		//Get the attributes
-		NamedNodeMap attributes = parent.getAttributes();
-		//Go through the attributes
-		for (int a = 0; a < attributes.getLength(); a++) {
-			//Get the attribute
-			Node attribute = attributes.item(a);
-			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("id"))
-				this.id = attribute.getNodeValue();
-		}
-		
 		//Get the nodes
 		NodeList nodes = parent.getChildNodes();
 		//Go through the nodes
@@ -55,9 +47,12 @@ public class Vertices {
 			//Get the current node
 			Node node = nodes.item(a);
 			//Check the name of the current node
-			if (node.getNodeName().equals("input")) {
-				this.input = new Input();
-				input.parse(node);
+			if (node.getNodeName().equals("color")) {
+				this.color = new ColladaColor();
+				this.color.parse(node);
+			} else if (node.getNodeName().equals("texture")) {
+				this.texture = new ColladaTexture();
+				this.texture.parse(node);
 			}
 		}
 	}

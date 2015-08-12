@@ -20,25 +20,22 @@ package org.andor.processor.collada;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-public class Input {
+public class ColladaSource {
 	
-	/* The different kinds of semantic */
-	public static final String SEMANTIC_POSITION = "POSITION";
-	public static final String SEMANTIC_VERTEX = "VERTEX";
-	public static final String SEMANTIC_NORMAL = "NORMAL";
-	public static final String SEMANTIC_TEXCOORD = "TEXCOORD";
+	/* The id of this source */
+	public String id;
 	
-	/* The semantic and source */
-	public String semantic;
-	public String source;
+	/* The float array within this source */
+	public ColladaFloatArray floatArray;
 	
-	/* The possible offset */
-	public int offset;
+	/* The technique common within this source */
+	public ColladaTechniqueCommon techniqueCommon;
 	
 	/* The constructor */
-	public Input() {
-		this.offset = 0;
+	public ColladaSource() {
+		
 	}
 	
 	/* The method used for parsing */
@@ -50,19 +47,24 @@ public class Input {
 			//Get the attribute
 			Node attribute = attributes.item(a);
 			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("semantic"))
-				this.semantic = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("source"))
-				this.source = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("offset"))
-				this.offset = Integer.parseInt(attribute.getNodeValue());
+			if (attribute.getNodeName().equals("id"))
+				id = attribute.getNodeValue();
+		}
+		//Get the nodes
+		NodeList nodes = parent.getChildNodes();
+		//Go through the nodes
+		for (int a = 0; a < nodes.getLength(); a++) {
+			//Get the current node
+			Node node = nodes.item(a);
+			//Check the name of the current node
+			if (node.getNodeName().equals("float_array")) {
+				this.floatArray = new ColladaFloatArray();
+				this.floatArray.parse(node);
+			} else if (node.getNodeName().equals("technique_common")) {
+				this.techniqueCommon = new ColladaTechniqueCommon();
+				this.techniqueCommon.parse(node);
+			}
 		}
 	}
-	
-	/* The methods used to check what this input's type is */
-	public boolean isPosition() { return this.semantic.equals(SEMANTIC_POSITION); }
-	public boolean isVertex() { return this.semantic.equals(SEMANTIC_VERTEX); }
-	public boolean isNormal() { return this.semantic.equals(SEMANTIC_NORMAL); }
-	public boolean isTexCoord() { return this.semantic.equals(SEMANTIC_TEXCOORD); }
 	
 }

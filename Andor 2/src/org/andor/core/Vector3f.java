@@ -41,6 +41,18 @@ public class Vector3f {
 		this.z = z;
 	}
 	
+	public Vector3f(Vector2f vector) {
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = 0;
+	}
+	
+	public Vector3f(Vector2f vector, float z) {
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = z;
+	}
+	
 	/* The methods used to perform operations on this vector */
 	public Vector3f addX(float x) { this.x += x; return this; }
 	public Vector3f addY(float y) { this.y += y; return this; }

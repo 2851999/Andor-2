@@ -23,12 +23,12 @@ import org.andor.core.resource.audio.AudioData;
 import org.andor.core.resource.audio.AudioLoader;
 import org.andor.core.resource.audio.AudioManager;
 import org.andor.core.resource.shader.Shader;
+import org.andor.core.resource.shader.ShaderLoader;
 import org.andor.core.resource.shader.ShaderManager;
 import org.andor.core.resource.texture.Texture;
 import org.andor.core.resource.texture.TextureLoader;
 import org.andor.core.resource.texture.TextureManager;
 import org.andor.core.resource.texture.TextureParameters;
-import org.andor.utils.ShaderUtils;
 
 public class ResourceManager {
 	
@@ -55,7 +55,7 @@ public class ResourceManager {
 	/* The method used to load and return a shader resource */
 	public Shader loadShader(String path) {
 		//Return the shader
-		return ShaderUtils.createShader(this.path + this.shadersPath + "/" + path, this.external);
+		return ShaderLoader.load(this.path + this.shadersPath + "/" + path, this.external);
 	}
 	
 	/* The methods used to load and return a texture resource */

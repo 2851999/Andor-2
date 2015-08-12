@@ -18,18 +18,22 @@
 
 package org.andor.processor.collada;
 
-import org.andor.processor.XMLDocument;
+import org.w3c.dom.Node;
 
-public class ColladaParser {
+public class ColladaSamplerSource {
 	
-	/* The static method used to parse a collada file */
-	public static Collada parse(XMLDocument document) {
-		//Create the collada object
-		Collada collada = new Collada();
-		//Parse the document
-		collada.parse(document.getDocument().getDocumentElement());
-		//Return the collada
-		return collada;
+	/* The value */
+	public String value;
+	
+	/* The constructor */
+	public ColladaSamplerSource() {
+		
+	}
+	
+	/* The method used for parsing */
+	public void parse(Node parent) {
+		//Assign the value
+		this.value = parent.getTextContent();
 	}
 	
 }

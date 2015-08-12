@@ -35,7 +35,11 @@ public class TextureLoader {
 	}
 	
 	public static Texture load(String path, boolean external, TextureParameters parameters) {
-		return Texture.load(loadBufferedImage(path, external), parameters);
+		return load(path, external, parameters, true);
+	}
+	
+	public static Texture load(String path, boolean external, TextureParameters parameters, boolean applyParameters) {
+		return Texture.load(loadBufferedImage(path, external), parameters, applyParameters);
 	}
 	
 	public static BufferedImage loadBufferedImage(String path, boolean external) {

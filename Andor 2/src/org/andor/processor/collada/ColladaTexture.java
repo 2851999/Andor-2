@@ -18,18 +18,34 @@
 
 package org.andor.processor.collada;
 
-import org.andor.processor.XMLDocument;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
-public class ColladaParser {
+public class ColladaTexture {
 	
-	/* The static method used to parse a collada file */
-	public static Collada parse(XMLDocument document) {
-		//Create the collada object
-		Collada collada = new Collada();
-		//Parse the document
-		collada.parse(document.getDocument().getDocumentElement());
-		//Return the collada
-		return collada;
+	/* The texture and texcoord values */
+	public String texture;
+	public String texcoord;
+	
+	/* The constructor */
+	public ColladaTexture() {
+		
+	}
+	
+	/* The method used for parsing */
+	public void parse(Node parent) {
+		//Get the attributes
+		NamedNodeMap attributes = parent.getAttributes();
+		//Go through the attributes
+		for (int a = 0; a < attributes.getLength(); a++) {
+			//Get the attribute
+			Node attribute = attributes.item(a);
+			//Check the current attributes name and assign the correct value
+			if (attribute.getNodeName().equals("texture"))
+				this.texture = attribute.getNodeValue();
+			else if (attribute.getNodeName().equals("texcoord"))
+				this.texcoord = attribute.getNodeValue();
+		}
 	}
 	
 }

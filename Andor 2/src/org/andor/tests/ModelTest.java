@@ -33,6 +33,7 @@ import org.andor.core.resource.texture.TextureParameters;
 import org.andor.processor.XMLDocument;
 import org.andor.processor.collada.Collada;
 import org.andor.processor.collada.ColladaParser;
+import org.andor.utils.MathUtils;
 import org.andor.utils.OpenGLUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -49,7 +50,7 @@ public class ModelTest extends BaseGame {
 		
 		TextureParameters.DEFAULT.filter = GL11.GL_LINEAR_MIPMAP_LINEAR;
 		Settings.Window.Resolution = ScreenResolution.RES_720P;
-		//Settings.Video.Samples = 16;
+		Settings.Video.Samples = 16;
 		
 		wireframe = false;
 	}
@@ -65,7 +66,7 @@ public class ModelTest extends BaseGame {
 		
 		//Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/box.dae", true));
 		Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/Sponza/sponza.dae", true));
-		model = collada.convert().createModel();
+		model = collada.convert("H:/Storage/Users/Joel/Desktop/Sponza/", true).createModel();
 		model.scale.multiply(0.1f);
 		model.update();
 		
@@ -107,10 +108,10 @@ public class ModelTest extends BaseGame {
 		}
 	}
 	public void onMouseMoved(double x, double y, double xOffset, double yOffset) {
-		//Make sure the mouse is locked
-		if (Mouse.isLocked())
-			//Change the camera's rotation
+		if (Mouse.isLocked()) {
 			camera.rotation.add(new Vector3f((float) yOffset * 0.5f, (float) xOffset * 0.5f, 0));
+			this.camera.rotation.x = MathUtils.clamp(this.camera.rotation.x, -90, 90);
+		}
 	}
 	
 	public static void main(String[] args) {

@@ -49,14 +49,14 @@ public class TextureCubemap extends Texture {
 	/* The methods used to load the textures for this cubemap */
 	public void load(BufferedImage[] images) {
 		this.bind();
-		Texture.load(images[1], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z));
-		Texture.load(images[0], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_Z));
-		Texture.load(images[2], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_NEGATIVE_X));
-		Texture.load(images[3], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X));
-		Texture.load(images[5], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y));
-		Texture.load(images[4], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_Y));
+		Texture.load(images[1], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z), false);
+		Texture.load(images[0], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_Z), false);
+		Texture.load(images[2], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_NEGATIVE_X), false);
+		Texture.load(images[3], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X), false);
+		Texture.load(images[5], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y), false);
+		Texture.load(images[4], new TextureParameters(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_Y), false);
 		//Apply the parameters
-		this.applyParameters(false, false);
+		this.applyParameters(false, true);
 	}
 	
 	public void load(String path, String front, String back, String left, String right, String top, String bottom, boolean external) {

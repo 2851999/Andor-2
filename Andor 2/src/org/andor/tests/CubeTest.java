@@ -34,6 +34,7 @@ import org.andor.core.render.Renderer;
 import org.andor.core.resource.texture.Texture;
 import org.andor.core.resource.texture.TextureParameters;
 import org.andor.core.resource.texture.TextureSet;
+import org.andor.utils.MathUtils;
 import org.andor.utils.OpenGLUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -121,10 +122,10 @@ public class CubeTest extends BaseGame {
 		}
 	}
 	public void onMouseMoved(double x, double y, double xOffset, double yOffset) {
-		//Make sure the mouse is locked
-		if (Mouse.isLocked())
-			//Change the camera's rotation
+		if (Mouse.isLocked()) {
 			camera.rotation.add(new Vector3f((float) yOffset * 0.5f, (float) xOffset * 0.5f, 0));
+			this.camera.rotation.x = MathUtils.clamp(this.camera.rotation.x, -90, 90);
+		}
 	}
 	
 	public static void main(String[] args) {

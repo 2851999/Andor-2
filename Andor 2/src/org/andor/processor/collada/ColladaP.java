@@ -19,32 +19,41 @@
 package org.andor.processor.collada;
 
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public class TechniqueCommon {
+public class ColladaP {
 	
-	/* The accessor */
-	public Accessor accessor;
+	/* The values */
+	public int[] values;
 	
 	/* The constructor */
-	public TechniqueCommon() {
+	public ColladaP() {
 		
+	}
+	
+	/* The method used to return an array of values given an offset */
+	public int[] getValues(int offset, int count, int valuesCount) {
+		//The array
+		int stride = values.length / count / valuesCount;
+		int[] v = new int[count * valuesCount];
+		int n = 0;
+		//Go through and set the values
+		for (int a = offset; a < values.length; a+=stride) {
+			v[n] = this.values[a];
+			n++;
+		}
+		//Return the values
+		return v;
 	}
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
-		//Get the nodes
-		NodeList nodes = parent.getChildNodes();
-		//Go through the nodes
-		for (int a = 0; a < nodes.getLength(); a++) {
-			//Get the current node
-			Node node = nodes.item(a);
-			//Check the name of the current node
-			if (node.getNodeName().equals("accessor")) {
-				this.accessor = new Accessor();
-				this.accessor.parse(node);
-			}
-		}
+		//Get the values from the node
+		String[] split = parent.getTextContent().split(" ");
+		//Create the values object
+		this.values = new int[split.length];
+		//Assign the values
+		for (int a = 0; a < this.values.length; a++)
+			this.values[a] = Integer.parseInt(split[a]);
 	}
 	
 }

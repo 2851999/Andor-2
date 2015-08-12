@@ -97,17 +97,24 @@ public class RenderData {
 	private Material material;
 	
 	/* The constructor */
-	public RenderData(int renderMode, boolean separateVertices, boolean separateColours, boolean separateTextureCoordinates, boolean separateNormals) {
+	public RenderData(int renderMode, boolean separateVertices, boolean separateColours, boolean separateTextureCoordinates, boolean separateNormals, Material material) {
 		this.renderMode = renderMode;
 		this.separateVertices = separateVertices;
 		this.separateColours = separateColours;
 		this.separateTextureCoordinates = separateTextureCoordinates;
 		this.separateNormals = separateNormals;
+		this.material = material;
 		
-		this.material = new Material("Default");
+		if (this.material == null)
+			this.material = new Material("Default");
 		
 		//Add this to the list of instances
 		instances.add(this);
+	}
+	
+	/* The other constructors */
+	public RenderData(int renderMode, boolean separateVertices, boolean separateColours, boolean separateTextureCoordinates, boolean separateNormals) {
+		this(renderMode, separateVertices, separateColours, separateTextureCoordinates, separateNormals, null);
 	}
 	
 	/* The method used to setup this render data (note: indices can be null) */

@@ -31,8 +31,8 @@ import org.andor.core.input.Keyboard;
 import org.andor.core.input.Mouse;
 import org.andor.core.render.Renderer;
 import org.andor.core.resource.ResourceManager;
-import org.andor.core.resource.audio.AudioListener;
 import org.andor.core.resource.audio.AudioSource;
+import org.andor.core.resource.audio.SoundSystem;
 import org.andor.core.resource.texture.Texture;
 import org.andor.core.resource.texture.TextureParameters;
 import org.andor.utils.MathUtils;
@@ -43,11 +43,11 @@ import org.lwjgl.opengl.GL11;
 public class SoundTest extends BaseGame {
 	
 	public Camera3D camera;
-	public AudioListener listener;
 	public RenderableObject3D cube1;
 	public RenderableObject3D cube2;
 	public RenderableObject3D cube3;
 	public RenderableObject3D cube4;
+	public SoundSystem sound;
 	public AudioSource source1;
 	public AudioSource source2;
 	public AudioSource source3;
@@ -59,7 +59,8 @@ public class SoundTest extends BaseGame {
 		wireframe = false;
 		
 		Settings.Window.Resolution = ScreenResolution.RES_720P;
-		Settings.Audio.SoundEffectVolume = 50;
+		Settings.Audio.SoundEffectVolume = 100;
+		Settings.Audio.MusicVolume = 50;
 		TextureParameters.DEFAULT_FILTER = GL11.GL_LINEAR_MIPMAP_LINEAR;
 		Settings.Video.Samples = 16;
 	}
@@ -90,27 +91,12 @@ public class SoundTest extends BaseGame {
 		this.cube3.position.z = 8;
 		this.cube3.update();
 		
-		this.listener = new AudioListener();
-		this.listener.attachObject(camera);
-		
-		this.source1 = new AudioSource(manager.loadAudio("test.ogg"), AudioSource.TYPE_SOUND_EFFECT);
-		this.source1.setPosition(0, -1, 0);
-		this.source1.play();
-		this.source1.update();
-		
-		this.source2 = new AudioSource(manager.loadAudio("test2.ogg"), AudioSource.TYPE_SOUND_EFFECT);
-		this.source2.setPosition(8, -1, 0);
-		this.source2.play();
-		this.source2.update();
-		
-		this.source3 = new AudioSource(manager.loadAudio("test3.ogg"), AudioSource.TYPE_SOUND_EFFECT);
-		this.source3.setPosition(0, -1, 8);
-		this.source3.play();
-		this.source3.update();
-		
-		this.source4 = new AudioSource(manager.loadAudio("test4.ogg"), AudioSource.TYPE_SOUND_EFFECT);
-		this.source4.play();
-		this.source4.update();
+		this.sound = new SoundSystem();
+		this.sound.createListener(this.camera);
+		this.sound.playAsSoundEffect("Source1", manager.loadAudio("test.ogg"), new Vector3f(0, -1, 0));
+		this.sound.playAsSoundEffect("Source2", manager.loadAudio("test2.ogg"), new Vector3f(8, -1, 0));
+		this.sound.playAsSoundEffect("Source3", manager.loadAudio("test3.ogg"), new Vector3f(0, -1, 8));
+		this.sound.playAsMusic("Source4", manager.loadAudio("test4.ogg"));
 		
 		Mouse.lock();
 	}
@@ -132,7 +118,7 @@ public class SoundTest extends BaseGame {
 		OpenGLUtils.enableTexture2D();
 		OpenGLUtils.setupRemoveAlpha();
 		
-		this.listener.update();
+		this.sound.update();
 		this.camera.useView();
 		this.cube1.render();
 		this.cube2.render();

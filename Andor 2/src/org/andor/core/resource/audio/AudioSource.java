@@ -19,6 +19,7 @@
 package org.andor.core.resource.audio;
 
 import org.andor.Settings;
+import org.andor.core.Vector2f;
 import org.andor.core.Vector3f;
 import org.andor.utils.Logger;
 import org.lwjgl.openal.AL10;
@@ -65,6 +66,17 @@ public class AudioSource extends AudioObject {
 		AL10.alSourcei(this.sourceHandle, AL10.AL_BUFFER, this.bufferHandle);
 		//Add this to the list of audio resources
 		AudioManager.add(this);
+	}
+	
+	/* The other constructors */
+	public AudioSource(AudioData data, int type, Vector2f position) {
+		this(data, type);
+		this.setPosition(position);
+	}
+	
+	public AudioSource(AudioData data, int type, Vector3f position) {
+		this(data, type);
+		this.setPosition(position);
 	}
 	
 	/* The method used to update and recalculate the volume of this source */
@@ -126,5 +138,6 @@ public class AudioSource extends AudioObject {
 	public float getPitch() { return this.pitch; }
 	public float getGain() { return this.gain; }
 	public boolean doesLoop() { return this.loop; }
+	public boolean isPlaying() { return AL10.alGetSourcei(this.sourceHandle, AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING; }
 	
 }

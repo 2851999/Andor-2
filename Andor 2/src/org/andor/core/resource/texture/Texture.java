@@ -121,13 +121,16 @@ public class Texture {
 	public int getNumberOfColourComponents() { return this.numberOfColourComponents; }
 	public boolean hasTexture() { return this.pointer != -1; }
 	
-	/* The static method used to load and setup a texture given a buffered image */
+	/* The static methods used to load and setup a texture given a buffered image */
 	public static Texture load(BufferedImage bufferedImage) {
 		return load(bufferedImage, TextureParameters.DEFAULT);
 	}
 	
-	/* The static method used to load and setup a texture given a buffered image */
 	public static Texture load(BufferedImage bufferedImage, TextureParameters parameters) {
+		return load(bufferedImage, parameters, true);
+	}
+	
+	public static Texture load(BufferedImage bufferedImage, TextureParameters parameters, boolean applyParameters) {
 		//Create the texture and set its variables
 		Texture texture = new Texture(parameters);
 		int imageWidth = bufferedImage.getWidth();
@@ -155,8 +158,9 @@ public class Texture {
 		
 		texture.bind();
 		GL11.glTexImage2D(texture.parameters.getTarget(), 0, colourMode, texture.getWidth(), texture.getHeight(), 0, colourMode, GL11.GL_UNSIGNED_BYTE, pixels);
-		//Apply the parameters
-		texture.applyParameters(false, true);
+		//Apply the parameters if needed
+		if (applyParameters)
+			texture.applyParameters(false, true);
 		
 		return texture;
 	}

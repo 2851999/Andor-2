@@ -18,36 +18,17 @@
 
 package org.andor.processor.collada;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Mesh {
+public class ColladaShininess {
 	
-	/* The sources */
-	public List<Source> sources;
-	
-	/* The vertices */
-	public Vertices vertices;
-	
-	/* The polylist */
-	public Polylist polylist;
+	/* The float instance */
+	public ColladaFloat floatValue;
 	
 	/* The constructor */
-	public Mesh() {
-		this.sources = new ArrayList<Source>();
-	}
-	
-	/* The method used to get a source given a name */
-	public Source getSource(String id) {
-		//Go through the sources
-		for (int a = 0; a < sources.size(); a++) {
-			if (sources.get(a).id.equals(id))
-				return sources.get(a);
-		}
-		return null;
+	public ColladaShininess() {
+		
 	}
 	
 	/* The method used for parsing */
@@ -59,18 +40,9 @@ public class Mesh {
 			//Get the current node
 			Node node = nodes.item(a);
 			//Check the name of the current node
-			if (node.getNodeName().equals("source")) {
-				//Create a new source
-				Source source = new Source();
-				source.parse(node);
-				//Add the source
-				this.sources.add(source);
-			} else if (node.getNodeName().equals("vertices")) {
-				this.vertices = new Vertices();
-				this.vertices.parse(node);
-			} else if (node.getNodeName().equals("polylist")) {
-				this.polylist = new Polylist();
-				this.polylist.parse(node);
+			if (node.getNodeName().equals("float")) {
+				this.floatValue = new ColladaFloat();
+				this.floatValue.parse(node);
 			}
 		}
 	}

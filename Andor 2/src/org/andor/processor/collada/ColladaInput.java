@@ -18,28 +18,27 @@
 
 package org.andor.processor.collada;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public class Polylist {
+public class ColladaInput {
 	
-	/* The material and count */
-	public String material;
-	public int count;
+	/* The different kinds of semantic */
+	public static final String SEMANTIC_POSITION = "POSITION";
+	public static final String SEMANTIC_VERTEX = "VERTEX";
+	public static final String SEMANTIC_NORMAL = "NORMAL";
+	public static final String SEMANTIC_TEXCOORD = "TEXCOORD";
 	
-	/* The inputs in this list */
-	public List<Input> inputs;
+	/* The semantic and source */
+	public String semantic;
+	public String source;
 	
-	/* The p in this list */
-	public P p;
+	/* The possible offset */
+	public int offset;
 	
 	/* The constructor */
-	public Polylist() {
-		this.inputs = new ArrayList<Input>();
+	public ColladaInput() {
+		this.offset = 0;
 	}
 	
 	/* The method used for parsing */
@@ -51,29 +50,19 @@ public class Polylist {
 			//Get the attribute
 			Node attribute = attributes.item(a);
 			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("material"))
-				this.material = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("count"))
-				this.count = Integer.parseInt(attribute.getNodeValue());
-		}
-		//Get the nodes
-		NodeList nodes = parent.getChildNodes();
-		//Go through the nodes
-		for (int a = 0; a < nodes.getLength(); a++) {
-			//Get the current node
-			Node node = nodes.item(a);
-			//Check the name of the current node
-			if (node.getNodeName().equals("input")) {
-				//Create a new input
-				Input input = new Input();
-				input.parse(node);
-				//Add the source
-				this.inputs.add(input);
-			} else if (node.getNodeName().equals("p")) {
-				this.p = new P();
-				p.parse(node);
-			}
+			if (attribute.getNodeName().equals("semantic"))
+				this.semantic = attribute.getNodeValue();
+			else if (attribute.getNodeName().equals("source"))
+				this.source = attribute.getNodeValue();
+			else if (attribute.getNodeName().equals("offset"))
+				this.offset = Integer.parseInt(attribute.getNodeValue());
 		}
 	}
+	
+	/* The methods used to check what this input's type is */
+	public boolean isPosition() { return this.semantic.equals(SEMANTIC_POSITION); }
+	public boolean isVertex() { return this.semantic.equals(SEMANTIC_VERTEX); }
+	public boolean isNormal() { return this.semantic.equals(SEMANTIC_NORMAL); }
+	public boolean isTexCoord() { return this.semantic.equals(SEMANTIC_TEXCOORD); }
 	
 }

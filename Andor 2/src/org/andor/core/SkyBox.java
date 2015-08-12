@@ -66,9 +66,11 @@ public class SkyBox extends TextureCubemap {
 	public void renderSkybox() {
 		Renderer.addShader(shader);
 		this.box.update();
+		GL11.glDepthMask(false);
 		GL11.glEnable(GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		Renderer.render(this.box.getRenderData(), this.box.getModelMatrix());
 		Renderer.removeShader();
+		GL11.glDepthMask(true);
 	}
 	
 }

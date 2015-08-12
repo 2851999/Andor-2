@@ -16,20 +16,21 @@
  *
  *****************************************************************************/
 
-package org.andor.processor.collada;
+package org.andor.core.resource.shader;
 
-import org.andor.processor.XMLDocument;
+import org.andor.utils.ShaderUtils;
 
-public class ColladaParser {
+public class ShaderLoader {
 	
-	/* The static method used to parse a collada file */
-	public static Collada parse(XMLDocument document) {
-		//Create the collada object
-		Collada collada = new Collada();
-		//Parse the document
-		collada.parse(document.getDocument().getDocumentElement());
-		//Return the collada
-		return collada;
+	/* The static methods used to load a complete shader */
+	public static Shader load(String path, boolean external) {
+		//Load the shader and return it
+		return ShaderUtils.createShader(path, external);
+	}
+	
+	public static Shader load(String path, String vertexExtension, String fragmentExtension, boolean external) {
+		//Load the shader and return it
+		return ShaderUtils.createShader(path, vertexExtension, fragmentExtension, external);
 	}
 	
 }

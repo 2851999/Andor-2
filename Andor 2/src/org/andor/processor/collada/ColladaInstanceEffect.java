@@ -16,36 +16,31 @@
  *
  *****************************************************************************/
 
-package org.andor;
+package org.andor.processor.collada;
 
-import org.andor.core.Font;
-import org.andor.core.resource.texture.Texture;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
-public class Andor {
+public class ColladaInstanceEffect {
 	
-	/* The current version */
-	public static final String VERSION = "V2.0.0";
+	/* The url */
+	public String url;
 	
-	/* The nickname of this version */
-	public static final String VERSION_NAME = "Unknown At This Time";
+	/* The constructor */
+	public ColladaInstanceEffect() {
+		
+	}
 	
-	/* The current build's type */
-	public static final String BUILD_TYPE = "Experimental";
-	
-	/* The date this build started development */
-	public static final String DATE = "11/08/2015";
-	
-	/* The default engine resources */
-	public static class Resources {
-		/* The textures */
-		public static class Textures {
-			/* The blank texture */
-			public static Texture Blank;
-		}
-		/* The fonts */
-		public static class Fonts {
-			/* The default font */
-			public static Font Default;
+	/* The method used for parsing */
+	public void parse(Node parent) {
+		//Go through the attributes
+		NamedNodeMap attributes = parent.getAttributes();
+		for (int a = 0; a < attributes.getLength(); a++) {
+			//Get the attribute
+			Node attribute = attributes.item(a);
+			//Check the current attributes name and assign the correct value
+			if (attribute.getNodeName().equals("url"))
+				this.url = attribute.getNodeValue();
 		}
 	}
 	
