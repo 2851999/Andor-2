@@ -67,6 +67,8 @@ public class ModelTest extends BaseGame {
 		//Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/box.dae", true));
 		Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/Sponza/sponza.dae", true));
 		model = collada.convert("H:/Storage/Users/Joel/Desktop/Sponza/", true).createModel();
+		//Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/gingerbreadman.dae", true));
+		//model = collada.convert("H:/Storage/Users/Joel/Desktop/", true).createModel();
 		model.scale.multiply(0.1f);
 		model.update();
 		
@@ -93,7 +95,10 @@ public class ModelTest extends BaseGame {
 		OpenGLUtils.setupRemoveAlpha();
 		
 		this.camera.useView();
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glFrontFace(GL11.GL_CCW);
 		this.model.render();
+		GL11.glDisable(GL11.GL_CULL_FACE);
 	}
 	
 	public void onKeyPressed(int code) {

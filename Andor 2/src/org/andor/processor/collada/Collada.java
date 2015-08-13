@@ -46,6 +46,15 @@ public class Collada {
 	/* The geometry */
 	public ColladaLibraryGeometry libraryGeometry;
 	
+	/* The animations */
+	public ColladaLibraryAnimations libraryAnimations;
+	
+	/* The controllers */
+	public ColladaLibraryControllers libraryControllers;
+	
+	/* The visual scenes */
+	public ColladaLibraryVisualScenes libraryVisualScenes;
+	
 	/* The loaded textures */
 	public HashMap<String, Texture> loadedTextures;
 	
@@ -79,6 +88,18 @@ public class Collada {
 				//Create and parse the library
 				this.libraryMaterials = new ColladaLibraryMaterials();
 				this.libraryMaterials.parse(node);
+			} else if (node.getNodeName().equals("library_animations")) {
+				//Create and parse the library
+				this.libraryAnimations = new ColladaLibraryAnimations();
+				this.libraryAnimations.parse(node);
+			} else if (node.getNodeName().equals("library_controllers")) {
+				//Create and parse the library
+				this.libraryControllers = new ColladaLibraryControllers();
+				this.libraryControllers.parse(node);
+			} else if (node.getNodeName().equals("library_visual_scenes")) {
+				//Create and parse the library
+				this.libraryVisualScenes = new ColladaLibraryVisualScenes();
+				this.libraryVisualScenes.parse(node);
 			}
 		}
 	}
@@ -196,10 +217,9 @@ public class Collada {
 		if (input.isTexCoord())
 			invertY = true;
 		//Go through the indices
-		for (int b = 0; b < indices.length; b++) {
+		for (int b = 0; b < indices.length; b++)
 			//Add the values indicated by the current index
 			buffer.put(array.getValues(indices[b], stride, invertY));
-		}
 		//Assign the values
 		buffer.position(0);
 		if (input.isVertex()) {

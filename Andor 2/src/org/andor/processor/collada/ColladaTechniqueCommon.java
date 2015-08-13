@@ -26,10 +26,17 @@ public class ColladaTechniqueCommon {
 	/* The accessor */
 	public ColladaAccessor accessor;
 	
+	/* The instance material */
+	public ColladaInstanceMaterial instanceMaterial;
+	
 	/* The constructor */
 	public ColladaTechniqueCommon() {
 		
 	}
+	
+	/* The methods used to check whether a value exists */
+	public boolean hasAccessor() { return this.accessor != null; }
+	public boolean hasInstanceMaterial() { return this.instanceMaterial != null; }
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
@@ -43,6 +50,9 @@ public class ColladaTechniqueCommon {
 			if (node.getNodeName().equals("accessor")) {
 				this.accessor = new ColladaAccessor();
 				this.accessor.parse(node);
+			} else if (node.getNodeName().equals("instance_material")) {
+				this.instanceMaterial = new ColladaInstanceMaterial();
+				this.instanceMaterial.parse(node);
 			}
 		}
 	}

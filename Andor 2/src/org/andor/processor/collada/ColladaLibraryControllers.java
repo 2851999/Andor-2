@@ -18,53 +18,38 @@
 
 package org.andor.processor.collada;
 
-import org.w3c.dom.NamedNodeMap;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ColladaAccessor {
+public class ColladaLibraryControllers {
 	
-	/* The source this describes */
-	public String source;
-	
-	/* The count and stride */
-	public int count;
-	public int stride;
-	
-	/* The param */
-	public ColladaParam param;
+	/* The animations */
+	public List<ColladaController> controllers;
 	
 	/* The constructor */
-	public ColladaAccessor() {
-		
+	public ColladaLibraryControllers() {
+		this.controllers = new ArrayList<ColladaController>();
 	}
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
-		//Get the attributes
-		NamedNodeMap attributes = parent.getAttributes();
-		//Go through the attributes
-		for (int a = 0; a < attributes.getLength(); a++) {
-			//Get the attribute
-			Node attribute = attributes.item(a);
-			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("source"))
-				this.source = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("count"))
-				this.count = Integer.parseInt(attribute.getNodeValue());
-			else if (attribute.getNodeName().equals("stride"))
-				this.stride = Integer.parseInt(attribute.getNodeValue());
-		}
 		//Get the nodes
 		NodeList nodes = parent.getChildNodes();
 		//Go through the nodes
 		for (int a = 0; a < nodes.getLength(); a++) {
 			//Get the current node
 			Node node = nodes.item(a);
-			//Check the name of the current node
-			if (node.getNodeName().equals("param")) {
-				this.param = new ColladaParam();
-				this.param.parse(node);
+			//Check the current node
+			if (node.getNodeName().equals("controller")) {
+				//Create the controller
+				ColladaController controller = new ColladaController();
+				//Parse the controller
+				controller.parse(node);
+				//Add the controller
+				this.controllers.add(controller);
 			}
 		}
 	}

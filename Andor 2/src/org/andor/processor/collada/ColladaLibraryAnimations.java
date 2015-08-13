@@ -18,53 +18,49 @@
 
 package org.andor.processor.collada;
 
-import org.w3c.dom.NamedNodeMap;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ColladaAccessor {
+public class ColladaLibraryAnimations {
 	
-	/* The source this describes */
-	public String source;
-	
-	/* The count and stride */
-	public int count;
-	public int stride;
-	
-	/* The param */
-	public ColladaParam param;
+	/* The animations */
+	public List<ColladaAnimation> animations;
 	
 	/* The constructor */
-	public ColladaAccessor() {
-		
+	public ColladaLibraryAnimations() {
+		this.animations = new ArrayList<ColladaAnimation>();
+	}
+	
+	/* The method used to return a animation given its id */
+	public ColladaAnimation getAnimationById(String id) {
+		//Go through the animations
+		for (int a = 0; a < this.animations.size(); a++) {
+			//Check the current animation
+			if (this.animations.get(a).id.equals(id))
+				return this.animations.get(a);
+		}
+		return null;
 	}
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
-		//Get the attributes
-		NamedNodeMap attributes = parent.getAttributes();
-		//Go through the attributes
-		for (int a = 0; a < attributes.getLength(); a++) {
-			//Get the attribute
-			Node attribute = attributes.item(a);
-			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("source"))
-				this.source = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("count"))
-				this.count = Integer.parseInt(attribute.getNodeValue());
-			else if (attribute.getNodeName().equals("stride"))
-				this.stride = Integer.parseInt(attribute.getNodeValue());
-		}
 		//Get the nodes
 		NodeList nodes = parent.getChildNodes();
 		//Go through the nodes
 		for (int a = 0; a < nodes.getLength(); a++) {
 			//Get the current node
 			Node node = nodes.item(a);
-			//Check the name of the current node
-			if (node.getNodeName().equals("param")) {
-				this.param = new ColladaParam();
-				this.param.parse(node);
+			//Check the current node
+			if (node.getNodeName().equals("animation")) {
+				//Create the animation
+				ColladaAnimation animation = new ColladaAnimation();
+				//Parse the animation
+				animation.parse(node);
+				//Add the animation
+				this.animations.add(animation);
 			}
 		}
 	}

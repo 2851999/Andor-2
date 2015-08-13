@@ -28,6 +28,11 @@ public class ColladaInput {
 	public static final String SEMANTIC_VERTEX = "VERTEX";
 	public static final String SEMANTIC_NORMAL = "NORMAL";
 	public static final String SEMANTIC_TEXCOORD = "TEXCOORD";
+	public static final String SEMANTIC_INPUT = "INPUT";
+	public static final String SEMANTIC_OUTPUT = "OUTPUT";
+	public static final String SEMANTIC_INTERPOLATION = "INTERPOLATION";
+	public static final String SEMANTIC_JOINT = "JOINT";
+	public static final String SEMANTIC_INV_BIND_MATRIX = "INV_BIND_MATRIX";
 	
 	/* The semantic and source */
 	public String semantic;

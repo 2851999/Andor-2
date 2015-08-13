@@ -1,4 +1,73 @@
 -------------------------------------------------------------
+Release 0 | Beta 0 | Development 0 | Experimental 4
+
+Finished reading the Collada file, now onto the difficult
+part of actually using the animation data
+
+* Added ColladaAnimation
+* Added ColladaBindMaterial
+* Added ColladaBindShapeMatrix
+* Added ColladaChannel
+* Added ColladaController
+* Added ColladaInstanceController
+* Added ColladaJoints
+* Added ColladaLibraryAnimations
+* Added ColladaLibraryControllers
+* Added ColladaLibraryVisualScenes
+* Added ColladaMatrix
+* Added ColladaNameArray
+* Added ColladaParam
+* Added ColladaRotate
+* Added ColladaSampler
+* Added ColladaScale
+* Added ColladaSkeleton
+* Added ColladaSkin
+* Added ColladaTranslate
+* Added ColladaV
+* Added ColladaVCount
+* Added ColladaVertexWeights
+* Added ColladaVisualScene
+
+-------------------------------------------------------------
+Release 0 | Beta 0 | Development 0 | Experimental 3
+
+Some smaller changes, most notably basic texture support for
+Collada models
+
+* Added SoundSystem
+* Added ShaderLoader
+* Added ColladaAmbient
+* Added ColladaBump
+* Added ColladaColour
+* Added ColladaDiffuse
+* Added ColladaEffect
+* Added ColladaEmission
+* Added ColladaExtra
+* Added ColladaFloat
+* Added ColladaImage
+* Added ColladaIndexOfRefraction
+* Added ColladaInitFrom
+* Added ColladaInstanceEffect
+* Added ColladaLibraryEffects
+* Added ColladaLibraryImages
+* Added ColladaLibraryMaterials
+* Added ColladaMaterial
+* Added ColladaNewParam
+* Added ColladaPhong
+* Added ColladaProfileCommon
+* Added ColladaSampler2D
+* Added ColladaSamplerSource
+* Added ColladaShininess
+* Added ColladaSpecular
+* Added ColladaSurface
+* Added ColladaTechnique
+* Added ColladaTexture
+* Added ColladaTransparency
+* Added ColladaTransparent
+* Added the prefix 'Collada' onto everything in the
+  org.andor.processor.collada package
+
+-------------------------------------------------------------
 Release 0 | Beta 0 | Development 0 | Experimental 2
 
 This commit adds some more features, some of which were in

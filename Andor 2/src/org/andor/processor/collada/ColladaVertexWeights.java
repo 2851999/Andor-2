@@ -25,28 +25,24 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ColladaPolylist {
+public class ColladaVertexWeights {
 	
-	/* The material and count */
-	public String material;
+	/* The count */
 	public int count;
 	
 	/* The inputs in this list */
 	public List<ColladaInput> inputs;
 	
-	/* The p in this list */
-	public ColladaP p;
-	
 	/* The vcount */
 	public ColladaVCount vCount;
 	
+	/* The v in this list */
+	public ColladaV v;
+	
 	/* The constructor */
-	public ColladaPolylist() {
+	public ColladaVertexWeights() {
 		this.inputs = new ArrayList<ColladaInput>();
 	}
-	
-	/* The methods used to check whether a value exists */
-	public boolean hasMaterial() { return material != null; }
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
@@ -57,9 +53,7 @@ public class ColladaPolylist {
 			//Get the attribute
 			Node attribute = attributes.item(a);
 			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("material"))
-				this.material = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("count"))
+			if (attribute.getNodeName().equals("count"))
 				this.count = Integer.parseInt(attribute.getNodeValue());
 		}
 		//Get the nodes
@@ -78,9 +72,9 @@ public class ColladaPolylist {
 			} else if (node.getNodeName().equals("vcount")) {
 				this.vCount = new ColladaVCount();
 				this.vCount.parse(node);
-			} else if (node.getNodeName().equals("p")) {
-				this.p = new ColladaP();
-				this.p.parse(node);
+			} else if (node.getNodeName().equals("v")) {
+				this.v = new ColladaV();
+				this.v.parse(node);
 			}
 		}
 	}

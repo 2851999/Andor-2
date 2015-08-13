@@ -25,28 +25,21 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ColladaPolylist {
+public class ColladaInstanceController {
 	
-	/* The material and count */
-	public String material;
-	public int count;
+	/* The url */
+	public String url;
 	
-	/* The inputs in this list */
-	public List<ColladaInput> inputs;
+	/* The skeletons */
+	public List<ColladaSkeleton> skeletons;
 	
-	/* The p in this list */
-	public ColladaP p;
-	
-	/* The vcount */
-	public ColladaVCount vCount;
+	/* The bind material instance */
+	public ColladaBindMaterial bindMaterial;
 	
 	/* The constructor */
-	public ColladaPolylist() {
-		this.inputs = new ArrayList<ColladaInput>();
+	public ColladaInstanceController() {
+		this.skeletons = new ArrayList<ColladaSkeleton>();
 	}
-	
-	/* The methods used to check whether a value exists */
-	public boolean hasMaterial() { return material != null; }
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
@@ -57,10 +50,8 @@ public class ColladaPolylist {
 			//Get the attribute
 			Node attribute = attributes.item(a);
 			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("material"))
-				this.material = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("count"))
-				this.count = Integer.parseInt(attribute.getNodeValue());
+			if (attribute.getNodeName().equals("url"))
+				this.url = attribute.getNodeValue();
 		}
 		//Get the nodes
 		NodeList nodes = parent.getChildNodes();
@@ -69,18 +60,13 @@ public class ColladaPolylist {
 			//Get the current node
 			Node node = nodes.item(a);
 			//Check the name of the current node
-			if (node.getNodeName().equals("input")) {
-				//Create a new input
-				ColladaInput input = new ColladaInput();
-				input.parse(node);
-				//Add the source
-				this.inputs.add(input);
-			} else if (node.getNodeName().equals("vcount")) {
-				this.vCount = new ColladaVCount();
-				this.vCount.parse(node);
-			} else if (node.getNodeName().equals("p")) {
-				this.p = new ColladaP();
-				this.p.parse(node);
+			if (node.getNodeName().equals("skeleton")) {
+				ColladaSkeleton skeleton = new ColladaSkeleton();
+				skeleton.parse(node);
+				this.skeletons.add(skeleton);
+			} else if (node.getNodeName().equals("bind_material")) {
+				this.bindMaterial = new ColladaBindMaterial();
+				this.bindMaterial.parse(node);
 			}
 		}
 	}

@@ -20,24 +20,15 @@ package org.andor.processor.collada;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public class ColladaSource {
+public class ColladaChannel {
 	
-	/* The id of this source */
-	public String id;
-	
-	/* The float array within this source */
-	public ColladaFloatArray floatArray;
-	
-	/* The technique common within this source */
-	public ColladaTechniqueCommon techniqueCommon;
-	
-	/* The name array */
-	public ColladaNameArray nameArray;
+	/* The source and target */
+	public String source;
+	public String target;
 	
 	/* The constructor */
-	public ColladaSource() {
+	public ColladaChannel() {
 		
 	}
 	
@@ -50,26 +41,10 @@ public class ColladaSource {
 			//Get the attribute
 			Node attribute = attributes.item(a);
 			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("id"))
-				id = attribute.getNodeValue();
-		}
-		//Get the nodes
-		NodeList nodes = parent.getChildNodes();
-		//Go through the nodes
-		for (int a = 0; a < nodes.getLength(); a++) {
-			//Get the current node
-			Node node = nodes.item(a);
-			//Check the name of the current node
-			if (node.getNodeName().equals("float_array")) {
-				this.floatArray = new ColladaFloatArray();
-				this.floatArray.parse(node);
-			} else if (node.getNodeName().equals("technique_common")) {
-				this.techniqueCommon = new ColladaTechniqueCommon();
-				this.techniqueCommon.parse(node);
-			} else if (node.getNodeName().equals("Name_array")) {
-				this.nameArray = new ColladaNameArray();
-				this.nameArray.parse(node);
-			}
+			if (attribute.getNodeName().equals("source"))
+				this.source = attribute.getNodeValue();
+			else if (attribute.getNodeName().equals("target"))
+				this.target = attribute.getNodeValue();
 		}
 	}
 	

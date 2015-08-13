@@ -18,35 +18,24 @@
 
 package org.andor.processor.collada;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public class ColladaPolylist {
+public class ColladaNameArray {
 	
-	/* The material and count */
-	public String material;
+	/* The id of this data */
+	public String id;
+	
+	/* The count */
 	public int count;
 	
-	/* The inputs in this list */
-	public List<ColladaInput> inputs;
-	
-	/* The p in this list */
-	public ColladaP p;
-	
-	/* The vcount */
-	public ColladaVCount vCount;
+	/* The values */
+	public String[] values;
 	
 	/* The constructor */
-	public ColladaPolylist() {
-		this.inputs = new ArrayList<ColladaInput>();
+	public ColladaNameArray() {
+		
 	}
-	
-	/* The methods used to check whether a value exists */
-	public boolean hasMaterial() { return material != null; }
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
@@ -57,32 +46,13 @@ public class ColladaPolylist {
 			//Get the attribute
 			Node attribute = attributes.item(a);
 			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("material"))
-				this.material = attribute.getNodeValue();
+			if (attribute.getNodeName().equals("id"))
+				this.id = attribute.getNodeValue();
 			else if (attribute.getNodeName().equals("count"))
 				this.count = Integer.parseInt(attribute.getNodeValue());
 		}
-		//Get the nodes
-		NodeList nodes = parent.getChildNodes();
-		//Go through the nodes
-		for (int a = 0; a < nodes.getLength(); a++) {
-			//Get the current node
-			Node node = nodes.item(a);
-			//Check the name of the current node
-			if (node.getNodeName().equals("input")) {
-				//Create a new input
-				ColladaInput input = new ColladaInput();
-				input.parse(node);
-				//Add the source
-				this.inputs.add(input);
-			} else if (node.getNodeName().equals("vcount")) {
-				this.vCount = new ColladaVCount();
-				this.vCount.parse(node);
-			} else if (node.getNodeName().equals("p")) {
-				this.p = new ColladaP();
-				this.p.parse(node);
-			}
-		}
+		//Get the values
+		this.values = parent.getTextContent().split(" ");
 	}
 	
 }

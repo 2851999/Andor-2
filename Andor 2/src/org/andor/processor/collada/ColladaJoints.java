@@ -21,47 +21,21 @@ package org.andor.processor.collada;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ColladaPolylist {
-	
-	/* The material and count */
-	public String material;
-	public int count;
+public class ColladaJoints {
 	
 	/* The inputs in this list */
 	public List<ColladaInput> inputs;
 	
-	/* The p in this list */
-	public ColladaP p;
-	
-	/* The vcount */
-	public ColladaVCount vCount;
-	
 	/* The constructor */
-	public ColladaPolylist() {
+	public ColladaJoints() {
 		this.inputs = new ArrayList<ColladaInput>();
 	}
 	
-	/* The methods used to check whether a value exists */
-	public boolean hasMaterial() { return material != null; }
-	
 	/* The method used for parsing */
 	public void parse(Node parent) {
-		//Get the attributes
-		NamedNodeMap attributes = parent.getAttributes();
-		//Go through the attributes
-		for (int a = 0; a < attributes.getLength(); a++) {
-			//Get the attribute
-			Node attribute = attributes.item(a);
-			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("material"))
-				this.material = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("count"))
-				this.count = Integer.parseInt(attribute.getNodeValue());
-		}
 		//Get the nodes
 		NodeList nodes = parent.getChildNodes();
 		//Go through the nodes
@@ -75,12 +49,6 @@ public class ColladaPolylist {
 				input.parse(node);
 				//Add the source
 				this.inputs.add(input);
-			} else if (node.getNodeName().equals("vcount")) {
-				this.vCount = new ColladaVCount();
-				this.vCount.parse(node);
-			} else if (node.getNodeName().equals("p")) {
-				this.p = new ColladaP();
-				this.p.parse(node);
 			}
 		}
 	}

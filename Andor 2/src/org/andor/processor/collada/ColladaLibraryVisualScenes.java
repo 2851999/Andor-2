@@ -18,53 +18,49 @@
 
 package org.andor.processor.collada;
 
-import org.w3c.dom.NamedNodeMap;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ColladaAccessor {
+public class ColladaLibraryVisualScenes {
 	
-	/* The source this describes */
-	public String source;
-	
-	/* The count and stride */
-	public int count;
-	public int stride;
-	
-	/* The param */
-	public ColladaParam param;
+	/* The materials */
+	public List<ColladaVisualScene> visualScenes;
 	
 	/* The constructor */
-	public ColladaAccessor() {
-		
+	public ColladaLibraryVisualScenes() {
+		this.visualScenes = new ArrayList<ColladaVisualScene>();
+	}
+	
+	/* The method used to return a scene given its id */
+	public ColladaVisualScene getVisualSceneById(String id) {
+		//Go through the scene
+		for (int a = 0; a < this.visualScenes.size(); a++) {
+			//Check the current scene
+			if (this.visualScenes.get(a).id.equals(id))
+				return this.visualScenes.get(a);
+		}
+		return null;
 	}
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
-		//Get the attributes
-		NamedNodeMap attributes = parent.getAttributes();
-		//Go through the attributes
-		for (int a = 0; a < attributes.getLength(); a++) {
-			//Get the attribute
-			Node attribute = attributes.item(a);
-			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("source"))
-				this.source = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("count"))
-				this.count = Integer.parseInt(attribute.getNodeValue());
-			else if (attribute.getNodeName().equals("stride"))
-				this.stride = Integer.parseInt(attribute.getNodeValue());
-		}
 		//Get the nodes
 		NodeList nodes = parent.getChildNodes();
 		//Go through the nodes
 		for (int a = 0; a < nodes.getLength(); a++) {
 			//Get the current node
 			Node node = nodes.item(a);
-			//Check the name of the current node
-			if (node.getNodeName().equals("param")) {
-				this.param = new ColladaParam();
-				this.param.parse(node);
+			//Check the current node
+			if (node.getNodeName().equals("visual_scene")) {
+				//Create the scene
+				ColladaVisualScene visualScene = new ColladaVisualScene();
+				//Parse the scene
+				visualScene.parse(node);
+				//Add the scene
+				this.visualScenes.add(visualScene);
 			}
 		}
 	}

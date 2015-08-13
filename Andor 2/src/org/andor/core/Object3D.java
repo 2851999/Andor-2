@@ -83,6 +83,16 @@ public class Object3D extends BaseObject {
 		this.angularAcceleration = new Vector3f();
 	}
 	
+	/* The method used to update the physics of this object */
+	public void update(float deltaSeconds) {
+		//Update the position
+		this.position.add(this.velocity.clone().multiply(deltaSeconds));
+		this.velocity.add(this.acceleration.clone().multiply(deltaSeconds));
+		//Update the rotation
+		this.rotation.add(this.angularVelocity.clone().multiply(deltaSeconds));
+		this.angularVelocity.add(this.angularAcceleration.clone().multiply(deltaSeconds));
+	}
+	
 	/* The method used to attach a child object to this */
 	public void attach(Object3D child) { child.setParent(this); }
 	

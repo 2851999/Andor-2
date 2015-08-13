@@ -25,28 +25,34 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ColladaPolylist {
+public class ColladaAnimation {
 	
-	/* The material and count */
-	public String material;
-	public int count;
+	/* The id */
+	public String id;
 	
-	/* The inputs in this list */
-	public List<ColladaInput> inputs;
+	/* The sources */
+	public List<ColladaSource> sources;
 	
-	/* The p in this list */
-	public ColladaP p;
+	/* The sampler */
+	public ColladaSampler sampler;
 	
-	/* The vcount */
-	public ColladaVCount vCount;
+	/* The channel */
+	public ColladaChannel channel;
 	
 	/* The constructor */
-	public ColladaPolylist() {
-		this.inputs = new ArrayList<ColladaInput>();
+	public ColladaAnimation() {
+		this.sources = new ArrayList<ColladaSource>();
 	}
 	
-	/* The methods used to check whether a value exists */
-	public boolean hasMaterial() { return material != null; }
+	/* The method used to get a source given it's id */
+	public ColladaSource getSourceById(String id) {
+		//Go through the sources
+		for (int a = 0; a < sources.size(); a++) {
+			if (sources.get(a).id.equals(id))
+				return sources.get(a);
+		}
+		return null;
+	}
 	
 	/* The method used for parsing */
 	public void parse(Node parent) {
@@ -57,10 +63,8 @@ public class ColladaPolylist {
 			//Get the attribute
 			Node attribute = attributes.item(a);
 			//Check the current attributes name and assign the correct value
-			if (attribute.getNodeName().equals("material"))
-				this.material = attribute.getNodeValue();
-			else if (attribute.getNodeName().equals("count"))
-				this.count = Integer.parseInt(attribute.getNodeValue());
+			if (attribute.getNodeName().equals("id"))
+				this.id = attribute.getNodeValue();
 		}
 		//Get the nodes
 		NodeList nodes = parent.getChildNodes();
@@ -69,18 +73,18 @@ public class ColladaPolylist {
 			//Get the current node
 			Node node = nodes.item(a);
 			//Check the name of the current node
-			if (node.getNodeName().equals("input")) {
-				//Create a new input
-				ColladaInput input = new ColladaInput();
-				input.parse(node);
+			if (node.getNodeName().equals("source")) {
+				//Create a new source
+				ColladaSource source = new ColladaSource();
+				source.parse(node);
 				//Add the source
-				this.inputs.add(input);
-			} else if (node.getNodeName().equals("vcount")) {
-				this.vCount = new ColladaVCount();
-				this.vCount.parse(node);
-			} else if (node.getNodeName().equals("p")) {
-				this.p = new ColladaP();
-				this.p.parse(node);
+				this.sources.add(source);
+			} else if (node.getNodeName().equals("sampler")) {
+				this.sampler = new ColladaSampler();
+				this.sampler.parse(node);
+			} else if (node.getNodeName().equals("channel")) {
+				this.channel = new ColladaChannel();
+				this.channel.parse(node);
 			}
 		}
 	}
