@@ -130,9 +130,9 @@ public class Timer {
 	public boolean hasTimePassedHours(float hours) { return hasTimePassedMinutes(hours * 60); }
 	
 	/* The methods used to return the number of seconds, minutes and hours that has passed */
-	public float getSeconds() { return getTime() / 1000; }
-	public float getMinutes() { return getSeconds() / 60; }
-	public float getHours() { return getMinutes() / 60; }
+	public float getSeconds() { return (float) getTime() / 1000f; }
+	public float getMinutes() { return getSeconds() / 60f; }
+	public float getHours() { return getMinutes() / 60f; }
 	
 	/* The method used to return the current state of this timer */
 	public boolean isRunning() { return this.running; }

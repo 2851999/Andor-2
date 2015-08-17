@@ -21,26 +21,31 @@ package org.andor.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ANModel {
+public class ModelSkeleton {
 	
-	/* The geometry */
-	public List<ANGeometry> geometry;
+	/* The root joints */
+	public List<ModelJoint> rootJoints;
+	public List<ModelJoint> allJoints;
 	
 	/* The constructor */
-	public ANModel() {
-		this.geometry = new ArrayList<ANGeometry>();
+	public ModelSkeleton() {
+		this.rootJoints = new ArrayList<ModelJoint>();
+		this.allJoints = new ArrayList<ModelJoint>();
 	}
 	
-	/* The method used to get a model */
-	public Model createModel() {
-		//Create the model
-		Model model = new Model();
-		//Go through the geometry
-		for (int a = 0; a < geometry.size(); a++)
-			//Add the current geometry data
-			model.data.add(geometry.get(a).createRenderData());
-		//Return the model
-		return model;
+	/* The method used to setup the joints given a keyframe */
+	public void setup(int keyframe, float i) {
+		for (int a = 0; a < rootJoints.size(); a++)
+			rootJoints.get(a).setup(keyframe, i);
+	}
+	
+	/* The method used to get a joint given its name */
+	public ModelJoint getJointByName(String name) {
+		for (int a = 0; a < allJoints.size(); a++) {
+			if (allJoints.get(a).name.equals(name))
+				return allJoints.get(a);
+		}
+		return null;
 	}
 	
 }

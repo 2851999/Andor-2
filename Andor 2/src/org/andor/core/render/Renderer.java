@@ -52,6 +52,7 @@ public class Renderer {
 		shader.bind();
 		shader.addUniform("ModelViewProjectionMatrix", "mvp");
 		shader.addUniform("Texture", "texture");
+		shader.addUniform("DiffuseColour", "diffuseColour");
 		shader.addAttribute("Vertex", "vertex");
 		shader.addAttribute("Colour", "colour");
 		shader.addAttribute("TextureCoordinate", "textureCoordinate");

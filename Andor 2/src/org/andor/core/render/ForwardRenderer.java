@@ -60,6 +60,7 @@ public class ForwardRenderer extends Renderer {
 			Logger.log("Andor - ForwardRenderer", "Main camera not set, nothing will be able to render!");
 		//Check the material
 		if (data.hasMaterial()) {
+			currentShader.setUniformf("DiffuseColour", data.getMaterial().getDiffuseColour());
 			if (data.getMaterial().hasDiffuseTexture())
 				data.getMaterial().getDiffuseTexture().bind();
 			else

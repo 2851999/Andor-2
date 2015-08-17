@@ -33,6 +33,7 @@ public class ColladaInput {
 	public static final String SEMANTIC_INTERPOLATION = "INTERPOLATION";
 	public static final String SEMANTIC_JOINT = "JOINT";
 	public static final String SEMANTIC_INV_BIND_MATRIX = "INV_BIND_MATRIX";
+	public static final String SEMANTIC_WEIGHT = "WEIGHT";
 	
 	/* The semantic and source */
 	public String semantic;

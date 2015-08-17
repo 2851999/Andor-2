@@ -33,7 +33,7 @@ public class Andor {
 	public static final String BUILD_TYPE = "Experimental";
 	
 	/* The date this build started development */
-	public static final String DATE = "12/08/2015";
+	public static final String DATE = "13/08/2015";
 	
 	/* The default engine resources */
 	public static class Resources {

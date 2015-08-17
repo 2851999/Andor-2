@@ -57,6 +57,7 @@ public class SkyBox extends TextureCubemap {
 			shader.bind();
 			shader.addUniform("ModelViewProjectionMatrix", "mvp");
 			shader.addUniform("Texture", "skyBox");
+			shader.addUniform("DiffuseColour", "diffuseColour");
 			shader.addAttribute("Vertex", "vertex");
 			shader.unbind();
 		}

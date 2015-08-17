@@ -37,6 +37,15 @@ public class ColladaNameArray {
 		
 	}
 	
+	/* The method used to get the index of a particular string value */
+	public int getIndex(String value) {
+		for (int a = 0; a < values.length; a++) {
+			if (values[a].equals(value))
+				return a;
+		}
+		return -1;
+	}
+	
 	/* The method used for parsing */
 	public void parse(Node parent) {
 		//Get the attributes

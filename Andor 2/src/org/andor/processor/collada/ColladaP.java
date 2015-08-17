@@ -37,7 +37,7 @@ public class ColladaP {
 		int[] v = new int[count * valuesCount];
 		int n = 0;
 		//Go through and set the values
-		for (int a = offset; a < values.length; a+=stride) {
+		for (int a = offset; n < v.length; a+=stride) {
 			v[n] = this.values[a];
 			n++;
 		}

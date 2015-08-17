@@ -22,6 +22,11 @@ import org.andor.core.Colour;
 
 public class MathUtils {
 	
+	/* The static method used to interpolate between two values */
+	public static float interpolate(float a, float b, float t) {
+		return ((b * t) + ((1 - t) * a));
+	}
+	
 	/* The static method used to clamp a value given the minimum and maximum values it can be */
 	public static float clamp(float value, float min, float max) {
 		//Check the value against the min/max

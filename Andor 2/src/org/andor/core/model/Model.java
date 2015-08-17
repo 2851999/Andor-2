@@ -18,29 +18,29 @@
 
 package org.andor.core.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.andor.core.RenderableObject3D;
-import org.andor.core.render.RenderData;
-import org.andor.core.render.Renderer;
 
 public class Model extends RenderableObject3D {
 	
-	/* The render data */
-	public List<RenderData> data;
+	/* The skin */
+	public ModelSkin skin;
+	
+	/* The skeleton */
+	public ModelSkeleton skeleton;
 	
 	/* The constructor */
 	public Model() {
 		super(null);
-		this.data = new ArrayList<RenderData>();
 	}
 	
 	/* The method used to render this model */
 	public void render() {
-		//Go through the data and render it
-		for (int a = 0; a < data.size(); a++)
-			Renderer.render(data.get(a), this.getModelMatrix());
+		this.update();
+		if (this.skin != null)
+			this.skin.render(this.getModelMatrix());
 	}
+	
+	/* The setters and getters */
+	public boolean hasSkeleton() { return skeleton != null; }
 	
 }

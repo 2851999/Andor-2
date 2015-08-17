@@ -59,6 +59,17 @@ public class ColladaVisualScene {
 		return null;
 	}
 	
+	
+	/* The method used to return an node with an instance controller */
+	public ColladaNode getNodeWithInstanceController() {
+		//Go through the nodes
+		for (int a = 0; a < nodes.size(); a++) {
+			if (nodes.get(a).type.equals("NODE") && nodes.get(a).instanceController != null)
+				return nodes.get(a);
+		}
+		return null;
+	}
+	
 	/* The method used for parsing */
 	public void parse(Node parent) {
 		//Go through the attributes

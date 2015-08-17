@@ -34,6 +34,15 @@ public class ColladaJoints {
 		this.inputs = new ArrayList<ColladaInput>();
 	}
 	
+	/* The method used to return an input given its semantic */
+	public ColladaInput getInputBySemantic(String semantic) {
+		for (int a = 0; a < inputs.size(); a++) {
+			if (inputs.get(a).semantic.equals(semantic))
+				return inputs.get(a);
+		}
+		return null;
+	}
+	
 	/* The method used for parsing */
 	public void parse(Node parent) {
 		//Get the nodes

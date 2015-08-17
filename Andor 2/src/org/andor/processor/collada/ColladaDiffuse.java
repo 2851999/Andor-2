@@ -24,7 +24,7 @@ import org.w3c.dom.NodeList;
 public class ColladaDiffuse {
 	
 	/* The colour instance */
-	public ColladaColor color;
+	public ColladaColor colour;
 	
 	/* The texture instance */
 	public ColladaTexture texture;
@@ -35,7 +35,7 @@ public class ColladaDiffuse {
 	}
 	
 	/* The methods used to check whether a value is present */
-	public boolean hasColor() { return this.color != null; }
+	public boolean hasColour() { return this.colour != null; }
 	public boolean hasTexture() { return this.texture != null; }
 	
 	/* The method used for parsing */
@@ -48,8 +48,8 @@ public class ColladaDiffuse {
 			Node node = nodes.item(a);
 			//Check the name of the current node
 			if (node.getNodeName().equals("color")) {
-				this.color = new ColladaColor();
-				this.color.parse(node);
+				this.colour = new ColladaColor();
+				this.colour.parse(node);
 			} else if (node.getNodeName().equals("texture")) {
 				this.texture = new ColladaTexture();
 				this.texture.parse(node);

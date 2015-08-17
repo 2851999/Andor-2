@@ -18,6 +18,7 @@
 
 package org.andor.core.render;
 
+import org.andor.core.Colour;
 import org.andor.core.resource.texture.Texture;
 
 public class Material {
@@ -26,16 +27,20 @@ public class Material {
 	private String name;
 	
 	/* The material properties */
+	private Colour diffuseColour;
 	private Texture diffuseTexture;
 	
 	/* The constructor */
 	public Material(String name) {
 		this.name = name;
+		this.diffuseColour = Colour.WHITE;
 	}
 	
 	/* The setters and getters */
+	public void setDiffuseColour(Colour diffuseColour) { this.diffuseColour = diffuseColour; }
 	public void setDiffuseTexture(Texture diffuseTexture) { this.diffuseTexture = diffuseTexture; }
 	public String getName() { return this.name; }
+	public Colour getDiffuseColour() { return this.diffuseColour; }
 	public Texture getDiffuseTexture() { return this.diffuseTexture; }
 	public boolean hasDiffuseTexture() { return this.diffuseTexture != null; }
 	

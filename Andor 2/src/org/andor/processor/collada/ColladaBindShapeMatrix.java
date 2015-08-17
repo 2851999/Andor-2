@@ -18,6 +18,7 @@
 
 package org.andor.processor.collada;
 
+import org.andor.core.Matrix4f;
 import org.w3c.dom.Node;
 
 public class ColladaBindShapeMatrix {
@@ -28,6 +29,11 @@ public class ColladaBindShapeMatrix {
 	/* The constructor */
 	public ColladaBindShapeMatrix() {
 		
+	}
+	
+	/* The method used to return a matrix */
+	public Matrix4f getMatrix() {
+		return new Matrix4f(values);
 	}
 	
 	/* The method used for parsing */

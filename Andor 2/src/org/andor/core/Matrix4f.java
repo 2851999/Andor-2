@@ -24,7 +24,7 @@ public class Matrix4f {
 	private float[] values;
 	
 	/* The default constructor */
-	public Matrix4f() {}
+	public Matrix4f() { this.values = new float[16]; }
 	
 	/* The constructor with the values given */
 	public Matrix4f(float[] values) { this.values = values; }
@@ -143,6 +143,22 @@ public class Matrix4f {
 				(matrixA[12] * matrixB[1]) + (matrixA[13] * matrixB[5]) + (matrixA[14] * matrixB[9]) + (matrixA[15] * matrixB[13]),
 				(matrixA[12] * matrixB[2]) + (matrixA[13] * matrixB[6]) + (matrixA[14] * matrixB[10]) + (matrixA[15] * matrixB[14]),
 				(matrixA[12] * matrixB[3]) + (matrixA[13] * matrixB[7]) + (matrixA[14] * matrixB[11]) + (matrixA[15] * matrixB[15]) };
+	}
+	
+	/* The method used to multiply this matrix by a Vector4f */
+	public Vector4f multiply(Vector4f vector) {
+		return new Vector4f(
+				(values[0] * vector.x) + (values[1] * vector.x) + (values[2] * vector.x) + (values[3] * vector.x),
+				(values[4] * vector.y) + (values[5] * vector.y) + (values[6] * vector.y) + (values[7] * vector.y),
+				(values[8] * vector.z) + (values[9] * vector.z) + (values[10] * vector.z) + (values[11] * vector.z),
+				(values[12] * vector.w) + (values[13] * vector.w) + (values[14] * vector.w) + (values[15] * vector.w)
+		);
+	}
+	
+	/* The method used to multiply this matrix by a Vector3f */
+	public Vector3f multiply(Vector3f vector) {
+		Vector4f result = this.multiply(new Vector4f(vector, 1));
+		return new Vector3f(result.x, result.y, result.z);
 	}
 	
 	/* The methods used to translate this matrix */
@@ -379,5 +395,20 @@ public class Matrix4f {
 	public float[] getValues() { return this.values; }
 	public float get(int n) { return this.values[n]; }
 	public float get(int x, int y) { return this.values[y * 4 + x]; }
+	
+	public String toString() {
+		if (this.values.length > 0) {
+			String s = "" + values[0];
+			for (int a = 1; a < values.length; a++) {
+				if (a % 4 == 0) {
+					s += "\n";
+					s += values[a];
+				} else
+					s += " " + values[a];
+			}
+			return s;
+		}
+		return "Empty";
+	}
 	
 }

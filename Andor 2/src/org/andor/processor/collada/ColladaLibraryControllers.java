@@ -34,6 +34,28 @@ public class ColladaLibraryControllers {
 		this.controllers = new ArrayList<ColladaController>();
 	}
 	
+	/* The method used to return a controller given its id */
+	public ColladaController getControllerById(String id) {
+		//Go through the controllers
+		for (int a = 0; a < this.controllers.size(); a++) {
+			//Check the current controller
+			if (this.controllers.get(a).id.equals(id))
+				return this.controllers.get(a);
+		}
+		return null;
+	}
+	
+	/* The method used to return a controller given its name */
+	public ColladaController getControllerByName(String name) {
+		//Go through the controllers
+		for (int a = 0; a < this.controllers.size(); a++) {
+			//Check the current controller
+			if (this.controllers.get(a).name.equals(name))
+				return this.controllers.get(a);
+		}
+		return null;
+	}
+	
 	/* The method used for parsing */
 	public void parse(Node parent) {
 		//Get the nodes

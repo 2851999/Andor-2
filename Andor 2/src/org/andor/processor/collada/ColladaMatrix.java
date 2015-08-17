@@ -18,6 +18,7 @@
 
 package org.andor.processor.collada;
 
+import org.andor.core.Matrix4f;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -32,6 +33,11 @@ public class ColladaMatrix {
 	/* The constructor */
 	public ColladaMatrix() {
 		
+	}
+	
+	/* The method used to return a matrix */
+	public Matrix4f getMatrix() {
+		return new Matrix4f(values);
 	}
 	
 	/* The method used for parsing */
@@ -51,7 +57,7 @@ public class ColladaMatrix {
 		//Create the values object
 		this.values = new float[split.length];
 		//Assign the values
-		for (int a = 0; a < this.values.length; a++)
+		for (int a = 0; a < split.length; a++)
 			this.values[a] = Float.parseFloat(split[a]);
 	}
 	

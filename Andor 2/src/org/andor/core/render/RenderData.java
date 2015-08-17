@@ -127,7 +127,7 @@ public class RenderData {
 		this.hasColours = colours != null;
 		this.hasTextureCoordinates = textureCoordinates != null;
 		this.hasNormals = normals != null;
-		this.hasIndices = false;
+		this.hasIndices = indices != null;
 		//Create the buffers
 		if (this.hasVertices)
 			this.vertices = BufferUtils.createFlippedBuffer(vertices);

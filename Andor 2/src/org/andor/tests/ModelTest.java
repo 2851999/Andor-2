@@ -32,9 +32,11 @@ import org.andor.core.render.Renderer;
 import org.andor.core.resource.texture.TextureParameters;
 import org.andor.processor.XMLDocument;
 import org.andor.processor.collada.Collada;
+import org.andor.processor.collada.ColladaConverter;
 import org.andor.processor.collada.ColladaParser;
 import org.andor.utils.MathUtils;
 import org.andor.utils.OpenGLUtils;
+import org.andor.utils.Timer;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -43,6 +45,8 @@ public class ModelTest extends BaseGame {
 	public volatile Camera3D camera;
 	public volatile Model model;
 	public boolean wireframe;
+	public Timer timer;
+	public int frame;
 	
 	/* The method called to initialise the game */
 	public void initialise() {
@@ -65,12 +69,19 @@ public class ModelTest extends BaseGame {
 		this.camera.setSkyBox(new SkyBox(path + "skybox6.jpg", true, 100));
 		
 		//Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/box.dae", true));
-		Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/Sponza/sponza.dae", true));
-		model = collada.convert("H:/Storage/Users/Joel/Desktop/Sponza/", true).createModel();
-		//Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/gingerbreadman.dae", true));
-		//model = collada.convert("H:/Storage/Users/Joel/Desktop/", true).createModel();
-		model.scale.multiply(0.1f);
+		//Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/Sponza/sponza.dae", true));
+		//model = ColladaConverter.convert(collada, "H:/Storage/Users/Joel/Desktop/Sponza/", true).createModel();
+		Collada collada = ColladaParser.parse(new XMLDocument("H:/Storage/Users/Joel/Desktop/gingerbreadman.dae", true));
+		model = ColladaConverter.convert(collada, "H:/Storage/Users/Joel/Desktop/", true);
 		model.update();
+		model.skeleton.setup(0, 0);
+		model.skin.setup();
+		model.rotation.x = -90;
+		//model.scale.multiply(0.1f);
+		
+		timer = new Timer();
+		timer.start();
+		frame = 0;
 		
 		Mouse.lock();
 	}
@@ -85,6 +96,17 @@ public class ModelTest extends BaseGame {
 			camera.moveLeft(0.01f * getDelta());
 		if (Keyboard.isPressed(GLFW.GLFW_KEY_D))
 			camera.moveRight(0.01f * getDelta());
+		
+		model.skeleton.setup(frame, timer.getSeconds() * 2);
+		model.skin.update();
+		
+		if (timer.getSeconds() > 0.5f) {
+			frame++;
+			timer.restart();
+			System.out.println(frame);
+			if (frame == 6)
+				frame = 0;
+		}
 	}
 	
 	/* The method called to render the game */
@@ -95,10 +117,10 @@ public class ModelTest extends BaseGame {
 		OpenGLUtils.setupRemoveAlpha();
 		
 		this.camera.useView();
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		GL11.glFrontFace(GL11.GL_CCW);
+		//GL11.glEnable(GL11.GL_CULL_FACE);
+		//GL11.glFrontFace(GL11.GL_CCW);
 		this.model.render();
-		GL11.glDisable(GL11.GL_CULL_FACE);
+		//GL11.glDisable(GL11.GL_CULL_FACE);
 	}
 	
 	public void onKeyPressed(int code) {

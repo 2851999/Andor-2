@@ -68,7 +68,7 @@ public class ColladaSkin {
 				source.parse(node);
 				//Add the source
 				this.sources.add(source);
-			} else if (node.getNodeName().equals("bindShapeMatrix")) {
+			} else if (node.getNodeName().equals("bind_shape_matrix")) {
 				this.bindShapeMatrix = new ColladaBindShapeMatrix();
 				this.bindShapeMatrix.parse(node);
 			} else if (node.getNodeName().equals("joints")) {

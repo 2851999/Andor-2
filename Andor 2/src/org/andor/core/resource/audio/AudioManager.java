@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALContext;
+import org.lwjgl.openal.ALDevice;
 
 public class AudioManager {
 	
@@ -45,13 +46,18 @@ public class AudioManager {
 	
 	/* The static method used to initialise the audio system */
 	public static void create() {
-		context = ALContext.create();
-		context.makeCurrent();
+		//Make sure there is a device to take the context
+		ALDevice device = ALDevice.getLastDevice();
+		if (device != null) {
+			context = ALContext.create();
+			context.makeCurrent();
+		}
 	}
 	
 	/* The static method used to destroy the audio system */
 	public static void destroy() {
-		AL.destroy(context);
+		if (context != null)
+			AL.destroy(context);
 	}
 	
 }

@@ -18,6 +18,7 @@
 
 package org.andor.processor.collada;
 
+import org.andor.core.Colour;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -32,6 +33,14 @@ public class ColladaColor {
 	/* The constructor */
 	public ColladaColor() {
 		
+	}
+	
+	/* The method used to get this colour */
+	public Colour getColour() {
+		if (values.length == 3)
+			return new Colour(values[0], values[1], values[2]);
+		else
+			return new Colour(values[0], values[1], values[2], values[3]);
 	}
 	
 	/* The method used for parsing */
