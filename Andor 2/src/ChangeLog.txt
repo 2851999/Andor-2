@@ -1,4 +1,13 @@
 -------------------------------------------------------------
+Release 0 | Beta 0 | Development 0 | Experimental 6
+
+* Fixed bug: Trying to use sound crashed the engine
+* Fixed bug: TextureAnimation2D wouldn't assign the tile
+  sheet image
+* Fixed bug: Rectangle.intersects(Rectangle other) wasn't
+  100% accurate
+
+-------------------------------------------------------------
 Release 0 | Beta 0 | Development 0 | Experimental 5
 
 Well, the Collada model support is still not quite finished

@@ -76,7 +76,7 @@ public class ShaderUtils {
 				//Check to see whether this line contains a shader preprocessor
 				if (line.contains("#")) {
 					//Remove any whitespace on the current line
-					line = ParserUtils.removeWhitespace(line);
+					line = line.trim();
 					//Check the preprocessor
 					if (line.startsWith("#include")) {
 						//Split up the line

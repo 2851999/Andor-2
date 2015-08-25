@@ -113,7 +113,7 @@ public class GUITest extends BaseGame implements GUIComponentListener {
 		this.radio.add(this.radio3);
 		
 		this.label = new GUILabel("This is a label");
-		this.label.setFont(FontUtils.createBitmapFont("Arial", Colour.WHITE, 16));
+		this.label.setFont(FontUtils.createBitmapFont("Arial", 16, Colour.WHITE));
 		this.label.position = new Vector2f(0, 0);
 		
 		this.radio.setSize(120, 80);

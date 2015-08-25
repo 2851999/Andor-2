@@ -44,28 +44,30 @@ public class AudioSource extends AudioObject {
 	
 	/* The constructor */
 	public AudioSource(AudioData data, int type) {
-		//Setup the variables
-		this.type = type;
-		this.sourceHandle = AL10.alGenSources();
-		this.bufferHandle = AL10.alGenBuffers();
-		this.pitch = 1f;
-		if (type == TYPE_SOUND_EFFECT)
-			this.gain = (float) (Settings.Audio.SoundEffectVolume) / 100f;
-		else if (type == TYPE_MUSIC)
-			this.gain = (float) (Settings.Audio.MusicVolume) / 100f;
-		else {
-			this.gain = 1f;
-			Logger.log("Andor - AudioSource", "Unknown audio type " + type);
+		if (AudioManager.hasContext()) {
+			//Setup the variables
+			this.type = type;
+			this.sourceHandle = AL10.alGenSources();
+			this.bufferHandle = AL10.alGenBuffers();
+			this.pitch = 1f;
+			if (type == TYPE_SOUND_EFFECT)
+				this.gain = (float) (Settings.Audio.SoundEffectVolume) / 100f;
+			else if (type == TYPE_MUSIC)
+				this.gain = (float) (Settings.Audio.MusicVolume) / 100f;
+			else {
+				this.gain = 1f;
+				Logger.log("Andor - AudioSource", "Unknown audio type " + type);
+			}
+			this.loop = false;
+			//Setup OpenAL
+			AL10.alBufferData(this.bufferHandle, data.getFormat(), data.getData(), data.getSampleRate());
+			//Dispose of the data
+			data.dispose();
+			//Setup the source
+			AL10.alSourcei(this.sourceHandle, AL10.AL_BUFFER, this.bufferHandle);
+			//Add this to the list of audio resources
+			AudioManager.add(this);
 		}
-		this.loop = false;
-		//Setup OpenAL
-		AL10.alBufferData(this.bufferHandle, data.getFormat(), data.getData(), data.getSampleRate());
-		//Dispose of the data
-		data.dispose();
-		//Setup the source
-		AL10.alSourcei(this.sourceHandle, AL10.AL_BUFFER, this.bufferHandle);
-		//Add this to the list of audio resources
-		AudioManager.add(this);
 	}
 	
 	/* The other constructors */
@@ -93,42 +95,50 @@ public class AudioSource extends AudioObject {
 	
 	/* The method used to update this source */
 	public void update() {
-		//Get all of the needed values
-		Vector3f sourcePosition = this.getPosition();
-		//Vector3f sourceRotation = this.getRotation();
-		Vector3f sourceVelocity = this.getVelocity();
-		//Update all of the source values
-		AL10.alSource3f(this.sourceHandle, AL10.AL_POSITION, sourcePosition.x, sourcePosition.y, sourcePosition.z);
-		//AL10.alSource3f(this.sourceHandle, AL10.AL_ORIENTATION, sourceRotation.x, sourceRotation.y, sourceRotation.z);
-		AL10.alSource3f(this.sourceHandle, AL10.AL_VELOCITY, sourceVelocity.x, sourceVelocity.y, sourceVelocity.z);
-		AL10.alSourcef(this.sourceHandle, AL10.AL_PITCH, this.pitch);
-		AL10.alSourcef(this.sourceHandle, AL10.AL_GAIN, this.gain);
-		if (this.loop)
-			AL10.alSourcei(this.sourceHandle, AL10.AL_LOOPING, AL10.AL_TRUE);
-		else
-			AL10.alSourcei(this.sourceHandle, AL10.AL_LOOPING, AL10.AL_FALSE);
+		if (AudioManager.hasContext()) {
+			//Get all of the needed values
+			Vector3f sourcePosition = this.getPosition();
+			//Vector3f sourceRotation = this.getRotation();
+			Vector3f sourceVelocity = this.getVelocity();
+			//Update all of the source values
+			AL10.alSource3f(this.sourceHandle, AL10.AL_POSITION, sourcePosition.x, sourcePosition.y, sourcePosition.z);
+			//AL10.alSource3f(this.sourceHandle, AL10.AL_ORIENTATION, sourceRotation.x, sourceRotation.y, sourceRotation.z);
+			AL10.alSource3f(this.sourceHandle, AL10.AL_VELOCITY, sourceVelocity.x, sourceVelocity.y, sourceVelocity.z);
+			AL10.alSourcef(this.sourceHandle, AL10.AL_PITCH, this.pitch);
+			AL10.alSourcef(this.sourceHandle, AL10.AL_GAIN, this.gain);
+			if (this.loop)
+				AL10.alSourcei(this.sourceHandle, AL10.AL_LOOPING, AL10.AL_TRUE);
+			else
+				AL10.alSourcei(this.sourceHandle, AL10.AL_LOOPING, AL10.AL_FALSE);
+		}
 	}
 	
 	/* Various source related methods */
 	public void play() {
-		AL10.alSourcePlay(this.sourceHandle);
+		if (AudioManager.hasContext())
+			AL10.alSourcePlay(this.sourceHandle);
 	}
 	
 	public void stop() {
-		AL10.alSourceStop(this.sourceHandle);
+		if (AudioManager.hasContext())
+			AL10.alSourceStop(this.sourceHandle);
 	}
 	
 	public void pause() {
-		AL10.alSourcePause(this.sourceHandle);
+		if (AudioManager.hasContext())
+			AL10.alSourcePause(this.sourceHandle);
 	}
 	
 	public void resume() {
-		AL10.alSourcePlay(this.sourceHandle);
+		if (AudioManager.hasContext())
+			AL10.alSourcePlay(this.sourceHandle);
 	}
 	
 	public void delete() {
-		AL10.alDeleteSources(this.sourceHandle);
-		AL10.alDeleteBuffers(this.bufferHandle);
+		if (AudioManager.hasContext()) {
+			AL10.alDeleteSources(this.sourceHandle);
+			AL10.alDeleteBuffers(this.bufferHandle);
+		}
 	}
 	
 	/* The setters and getters */

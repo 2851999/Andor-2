@@ -177,7 +177,7 @@ public class Object2D extends BaseObject {
 	
 	public Rectangle getBounds() {
 		Vector2f p = this.getPosition();
-		return new Rectangle(p.x + ((this.size.x * (1 - scale.x)) / 2), p.y + ((this.size.y * (1 - scale.y)) / 2), this.getWidth(), this.getHeight());
+		return new Rectangle(p.x, p.y, this.getWidth(), this.getHeight());
 	}
 	
 	public void setParent(Object2D parent) { this.parent = parent; }

@@ -55,7 +55,7 @@ public class ModelVertexGroup {
 		float[] vertices = new float[this.vertices.length * 3];
 		//float[] textureCoordinates = new float[this.vertices.length * 2];
 		//float[] normals  = new float[this.vertices.length * 3];
-		//float[] textureCoordinates = new float[this.vertices.length * 2];
+		float[] textureCoordinates = null;
 		//Go through the data
 		for (int a = 0; a < this.vertices.length; a++) {
 			Vector3f p = this.vertices[a].getPosition();
@@ -63,11 +63,17 @@ public class ModelVertexGroup {
 			vertices[(a * 3) + 1] = p.y;
 			vertices[(a * 3) + 2] = p.z;
 		}
-		//for (int a = 0; a < this.vertices.length; a++) {
-			//textureCoordinates[(a * 2)] = this.vertices[a].textureCoordinate.x;
-			//textureCoordinates[(a * 2) + 1] = this.vertices[a].textureCoordinate.y;
-		//}
-		this.data.setup(3, vertices, null, null, null, null);
+		if (this.vertices != null && this.vertices.length > 0) {
+			if (this.vertices[0].hasTextureCoordinate()) {
+				textureCoordinates = new float[this.vertices.length * 2];
+				for (int a = 0; a < this.vertices.length; a++) {
+					textureCoordinates[(a * 2)] = this.vertices[a].textureCoordinate.x;
+					textureCoordinates[(a * 2) + 1] = this.vertices[a].textureCoordinate.y;
+				}
+			}
+		}
+		
+		this.data.setup(3, vertices, null, null, textureCoordinates, null);
 		this.data.updateColour(Colour.WHITE);
 		this.data.setMaterial(material);
 	}

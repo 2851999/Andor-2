@@ -21,7 +21,8 @@ package org.andor.core.resource.audio;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.openal.AL;
+import org.andor.utils.Log;
+import org.andor.utils.Logger;
 import org.lwjgl.openal.ALContext;
 import org.lwjgl.openal.ALDevice;
 
@@ -30,8 +31,9 @@ public class AudioManager {
 	/* All of the created audio sources */
 	private static List<AudioSource> sources = new ArrayList<AudioSource>();
 	
-	/* The audio context */
-	private static ALContext context;
+	/* The audio context and device */
+	public static ALDevice device;
+	public static ALContext context;
 	
 	/* The static method used to add an audio source */
 	public static void add(AudioSource source) {
@@ -46,18 +48,31 @@ public class AudioManager {
 	
 	/* The static method used to initialise the audio system */
 	public static void create() {
-		//Make sure there is a device to take the context
-		ALDevice device = ALDevice.getLastDevice();
-		if (device != null) {
-			context = ALContext.create();
-			context.makeCurrent();
+		try {
+			device = ALDevice.create(null);
+			context = ALContext.create(device);
+		} catch (RuntimeException e) {
+			Logger.log("Andor - AudioManager", "A runtime error has occurred, most likely due to not having any audio devices enabled", Log.DEBUG);
 		}
 	}
 	
 	/* The static method used to destroy the audio system */
 	public static void destroy() {
-		if (context != null)
-			AL.destroy(context);
+		if (context != null) {
+			context.destroy();
+			device.destroy();
+		}
+	}
+	
+	/* The static method used to update the volume of all created sources */
+	public static void updateVolume() {
+		for (int a = 0; a < sources.size(); a++)
+			sources.get(a).updateVolume();
+	}
+	
+	/* The static method that returns whether the context has been created */
+	public static boolean hasContext() {
+		return context != null;
 	}
 	
 }

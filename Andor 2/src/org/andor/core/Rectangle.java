@@ -68,9 +68,13 @@ public class Rectangle {
 		if (this.intersects(other.x , other.y)
 				|| this.intersects(other.x + other.width , other.y)
 				|| this.intersects(other.x + other.width , other.y + other.height)
-				|| this.intersects(other.x , other.y + other.height)) {
+				|| this.intersects(other.x , other.y + other.height)
+				|| other.intersects(this.x , this.y)
+				|| other.intersects(this.x + this.width , this.y)
+				|| other.intersects(this.x + this.width , this.y + this.height)
+				|| other.intersects(this.x , this.y + this.height))
 			return true;
-		} else
+		else
 			return false;
 	}
 

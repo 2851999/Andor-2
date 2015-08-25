@@ -22,23 +22,12 @@ import java.util.List;
 
 public class ParserUtils {
 	
-	/* The static method used to remove any whitespace from the beginning and end of a line */
-	public static String removeWhitespace(String line) {
-		//Remove the whitespace
-		while (line.startsWith(" ") || line.startsWith("\t"))
-			line = line.substring(1);
-		while (line.endsWith(" ") || line.endsWith("\t"))
-			line = line.substring(0, line.length() - 1);
-		//Return the line
-		return line;
-	}
-	
 	/* The static method used to remove any whitespace from the beginning and end of parameters */
 	public static void removeWhitespace(String[] parameters) {
 		//Remove the whitespace
 		for (int a = 0; a < parameters.length; a++)
 			//Clean up the current line
-			parameters[a] = removeWhitespace(parameters[a]);
+			parameters[a] = parameters[a].trim();
 	}
 	
 	/* The static method for calculating a string */
@@ -54,7 +43,7 @@ public class ParserUtils {
 		//Go through each line
 		for (int a= 0; a < list.size(); a++) {
 			//Clean up the current line
-			list.set(a, removeWhitespace(list.get(a)));
+			list.set(a, list.get(a).trim());
 			//Check the current line to make sure it isn't empty
 			if (list.get(a).equals(""))
 				//Remove the current line

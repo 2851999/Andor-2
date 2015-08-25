@@ -66,53 +66,53 @@ public class FontUtils {
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
-	public static Font createBitmapFont(String font, Colour colour, float fontSize, int gridSize) {
+	public static Font createBitmapFont(String font, boolean external, int gridSize, float fontSize, Colour colour) {
 		return new Font(new BitmapText(generateBitmapFontImage(createFont(font, fontSize)), gridSize, fontSize, colour));
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
-	public static Font createBitmapFont(String font, Colour[] colours, float fontSize, int gridSize) {
+	public static Font createBitmapFont(String font, int gridSize, float fontSize, Colour colour) {
+		return new Font(new BitmapText(generateBitmapFontImage(createFont(font, fontSize)), gridSize, fontSize, colour));
+	}
+	
+	/* The static method used to create a bitmap front given the name of a font */
+	public static Font createBitmapFont(String font, int gridSize, float fontSize, Colour[] colours) {
 		return new Font(new BitmapText(generateBitmapFontImage(createFont(font, fontSize)), gridSize, fontSize, colours));
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
-	public static Font createBitmapFont(String font, Colour colour, float fontSize) {
-		return createBitmapFont(font, colour, fontSize, 16);
+	public static Font createBitmapFont(String font, float fontSize, Colour colour) {
+		return createBitmapFont(font, 16, fontSize, colour);
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
-	public static Font createBitmapFont(String font, Colour[] colours, float fontSize) {
-		return createBitmapFont(font, colours, fontSize, 16);
+	public static Font createBitmapFont(String font, float fontSize, Colour[] colours) {
+		return createBitmapFont(font, 16, fontSize, colours);
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
 	public static Font createBitmapFont(String font, float fontSize) {
-		return createBitmapFont(font, Colour.WHITE, fontSize, 16);
+		return createBitmapFont(font, 16, fontSize, Colour.WHITE);
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
-	public static Font createBitmapFont(String path, boolean external, Colour[] colours, float fontSize, int gridSize) {
+	public static Font createBitmapFont(String path, boolean external, int gridSize, float fontSize, Colour[] colours) {
 		return new Font(new BitmapText(generateBitmapFontImage(createFont(path, external, fontSize)), gridSize, fontSize, colours));
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
-	public static Font createBitmapFont(String path, boolean external, Colour[] colours, float fontSize) {
-		return createBitmapFont(path, external, colours, fontSize, 16);
+	public static Font createBitmapFont(String path, boolean external, float fontSize, Colour[] colours) {
+		return createBitmapFont(path, external, 16, fontSize, colours);
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
-	public static Font createBitmapFont(String path, boolean external, Colour colour, float fontSize, int gridSize) {
-		return new Font(new BitmapText(generateBitmapFontImage(createFont(path, external, fontSize)), gridSize, fontSize, colour));
-	}
-	
-	/* The static method used to create a bitmap front given the name of a font */
-	public static Font createBitmapFont(String path, boolean external, Colour colour, float fontSize) {
-		return createBitmapFont(path, external, colour, fontSize, 16);
+	public static Font createBitmapFont(String path, boolean external, float fontSize, Colour colour) {
+		return createBitmapFont(path, external, 16, fontSize, colour);
 	}
 	
 	/* The static method used to create a bitmap front given the name of a font */
 	public static Font createBitmapFont(String path, boolean external, float fontSize) {
-		return createBitmapFont(path, external, Colour.WHITE, fontSize, 16);
+		return createBitmapFont(path, external, 16, fontSize, Colour.WHITE);
 	}
 	
 	/* The static method used to generate an texture for a bitmap font */

@@ -108,7 +108,7 @@ public class EngineTest extends BaseGame implements ControlListenerInterface {
 		camera.update();
 		Renderer.addCamera(this.camera);
 		
-		font = FontUtils.createBitmapFont("Segoe UI", Colour.ARRAY_SUNSET, 40);
+		font = FontUtils.createBitmapFont("Segoe UI", 40, Colour.ARRAY_SUNSET);
 		font.bitmapFont.update();
 		
 		this.button = new GUIButton("Click Me", new Colour[] { new Colour(Colour.LIGHT_BLUE, 0.1f), new Colour(Colour.LIGHT_BLUE, 0.3f) }, 200, 40);

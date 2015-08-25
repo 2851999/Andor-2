@@ -14,6 +14,7 @@ public class TextureAnimation2D extends Animation2D {
 	
 	/* The textures */
 	private Texture[] textures;
+	private Texture tileSet;
 	
 	/* The data for a tile set animation */
 	private int currentTile;
@@ -41,6 +42,7 @@ public class TextureAnimation2D extends Animation2D {
 	/* The constructors for a tile sheet animation */
 	public TextureAnimation2D(RenderableObject2D entity, Texture tileSet, int tilesPerRow, int tilesPerColumn, int timeBetweenFrame, boolean repeat) {
 		super(entity, timeBetweenFrame, repeat);
+		this.tileSet = tileSet;
 		this.currentTile = -1;
 		this.tileSetWidth = tileSet.getWidth();
 		this.tileSetHeight = tileSet.getHeight();
@@ -53,11 +55,13 @@ public class TextureAnimation2D extends Animation2D {
 	
 	/* The method used to update this animation */
 	public void updateAnimation() {
-		if (textures != null)
+		if (textures != null) {
 			//Set the texture
 			this.getEntity().setTexture(this.textures[this.getCurrentFrame()]);
-		else {
+		} else {
 			if (currentTile != this.getCurrentFrame()) {
+				if (this.tileSet != null)
+					this.getEntity().setTexture(this.tileSet);
 				this.currentTile = this.getCurrentFrame();
 				//Get the coordinates of the tile in pixels
 				float x = (this.currentTile % this.tilesPerRow) * this.tileWidth;

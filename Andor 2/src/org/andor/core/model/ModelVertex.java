@@ -46,6 +46,13 @@ public class ModelVertex {
 		return clone;
 	}
 	
+	/* The methods used to check what values have been assigned */
+	public boolean hasPosition() { return this.position != null; }
+	public boolean hasNormal() { return this.normal != null; }
+	public boolean hasTextureCoordinate() { return this.textureCoordinate != null; }
+	public boolean hasJoints() { return this.joints != null; }
+	public boolean hasWeights() { return this.weights != null; }
+	
 	/* The method used to get the position from this vertex */
 	public Vector3f getPosition() {
 		if (joints != null) {
